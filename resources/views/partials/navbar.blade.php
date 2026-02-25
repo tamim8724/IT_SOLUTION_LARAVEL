@@ -2,7 +2,7 @@
     <div class="container">
         <nav class="navbar navbar-dark navbar-expand-lg py-0">
             <a href="{{ url('/') }}" class="navbar-brand">
-                <h1 class="text-white fw-bold d-block">High<span class="text-secondary">Tech</span></h1>
+                <h1 class="text-white fw-bold d-block">e-trust<span class="text-secondary">.online</span></h1>
             </a>
             <button type="button" class="navbar-toggler me-0" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
@@ -49,7 +49,7 @@
                 </div>
                 <div class="d-flex flex-column pe-4 border-end">
                     <span class="text-white-50">Have any questions?</span>
-                    <span class="text-secondary">Call: + 0123 456 7890</span>
+                    <span class="text-secondary">Call: +880 1960 013601</span>
                 </div>
                 <div class="d-flex align-items-center justify-content-center ms-4">
                     <a href="#"><i class="bi bi-search text-white fa-2x"></i></a>

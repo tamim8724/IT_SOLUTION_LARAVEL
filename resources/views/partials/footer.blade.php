@@ -3,7 +3,7 @@
         <div class="row g-5">
             <div class="col-lg-3 col-md-6">
                 <a href="{{ url('/') }}">
-                    <h1 class="text-white fw-bold d-block">High<span class="text-secondary">Tech</span></h1>
+                    <h1 class="text-white fw-bold d-block">e-trust<span class="text-secondary">.online</span></h1>
                 </a>
                 <p class="mt-4 text-light">Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta facere delectus qui placeat inventore consectetur repellendus optio debitis.</p>
                 <div class="d-flex hightech-link">
@@ -28,10 +28,10 @@
         <hr class="text-light mt-5 mb-4">
         <div class="row">
             <div class="col-md-6 text-center text-md-start">
-                <span class="text-light"><a href="#" class="text-secondary">© Your Site Name</a>, All rights reserved.</span>
+                <span class="text-light"><a href="#" class="text-secondary">e-trust.online</a>, All rights reserved.</span>
             </div>
             <div class="col-md-6 text-center text-md-end">
-                <span class="text-light">Designed By <a href="https://htmlcodex.com" class="text-secondary">HTML Codex</a></span>
+                <span class="text-light">Designed By <a class="text-secondary">Tamim Ahmed</a></span>
             </div>
         </div>
     </div>
