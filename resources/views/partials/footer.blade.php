@@ -31,7 +31,7 @@
                 <span class="text-light"><a href="#" class="text-secondary">e-trust.online</a>, All rights reserved.</span>
             </div>
             <div class="col-md-6 text-center text-md-end">
-                <span class="text-light">Designed By <a class="text-secondary">Tamim Ahmed</a></span>
+                <span class="text-light">Designed By <a class="text-secondary">Tamim & Anik</a></span>
             </div>
         </div>
     </div>
