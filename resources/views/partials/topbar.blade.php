@@ -3,7 +3,7 @@
         <div class="d-flex justify-content-between topbar">
             <div class="top-info">
                 <small class="me-3 text-white-50">
-                    <a href="#"><i class="fas fa-map-marker-alt me-2 text-secondary"></i></a>23 Ranking Street, New York
+                    <a href="#"><i class="fas fa-map-marker-alt me-2 text-secondary"></i></a>250/1, Nowatola, Moghbazar, Dhaka-1217
                 </small>
                 <small class="me-3 text-white-50">
                     <a href="#"><i class="fas fa-envelope me-2 text-secondary"></i></a>info@e-trust.online
