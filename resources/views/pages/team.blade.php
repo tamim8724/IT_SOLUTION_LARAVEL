@@ -79,9 +79,9 @@
                                 <p class="m-0">Managing Director & Founder</p>
                             </div>
                             <div class="team-icon d-flex justify-content-center pb-4">
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.facebook.com/YOUR-USERNAME" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.facebook.com/normalone98" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
                                 <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://x.com/YOUR-USERNAME" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.instagram.com/YOUR-USERNAME" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.instagram.com/i_am_anik_1" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
                                 <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.linkedin.com/in/YOUR-USERNAME" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
                             </div>
                         </div>
