@@ -82,7 +82,7 @@
                                 <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.facebook.com/normalone98" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
                                 <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://x.com/YOUR-USERNAME" target="_blank" rel="noopener noreferrer"><i class="fab fa-twitter"></i></a>
                                 <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.instagram.com/i_am_anik_1" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
-                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.linkedin.com/in/YOUR-USERNAME" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
+                                <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href="https://www.linkedin.com/in/md-muktadir-anik-432390214?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin-in"></i></a>
                             </div>
                         </div>
                     </div>
@@ -138,8 +138,8 @@
                                 <img src="{{ asset('img/team-4.jpg') }}" class="img-fluid w-100 rounded-circle" alt="">
                             </div>
                             <div class="team-name text-center py-3">
-                                <h4 class="">Full Name</h4>
-                                <p class="m-0">Designation</p>
+                                <h4 class="">Tamanna Faria</h4>
+                                <p class="m-0">Team Lead</p>
                             </div>
                             <div class="team-icon d-flex justify-content-center pb-4">
                                 <a class="btn btn-square btn-secondary text-white rounded-circle m-1" href=""><i class="fab fa-facebook-f"></i></a>
