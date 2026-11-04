@@ -1,39 +1,33 @@
 <?php
 
+use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('pages.home');
-});
+// 3D site. Each page has its own theme and 3D scene (resources/views/pages3d).
+// The previous Bootstrap pages are kept in resources/views/pages (not routed).
+Route::view('/', 'pages3d.home');
+Route::view('/about', 'pages3d.about');
+Route::view('/services', 'pages3d.services');
+Route::view('/projects', 'pages3d.projects');
+Route::view('/dorkari', 'pages3d.dorkari');
+Route::view('/team', 'pages3d.team');
+Route::view('/assistant', 'pages3d.assistant');
+Route::view('/contact', 'pages3d.contact');
 
-Route::get('/about', function () {
-    return view('pages.about');
-});
+// Contact form: max 5 submissions per minute per visitor
+Route::post('/contact', [ContactController::class, 'send'])
+    ->middleware('throttle:5,1')
+    ->name('contact.send');
 
-Route::get('/contact', function () {
-    return view('pages.contact');
-});
+// Free AI assistant (fair-use limits are inside the controller)
+Route::post('/api/chat', ChatController::class)->name('chat');
 
-Route::get('/blog', function () {
-    return view('pages.blog');
-});
-
-Route::get('/services', function () {
-    return view('pages.service');
-});
-
-Route::get('/projects', function () {
-    return view('pages.project');
-});
-
-Route::get('/team', function () {
-    return view('pages.team');
-});
-
-Route::get('/testimonials', function () {
-    return view('pages.testimonial');
-});
-
-Route::get('/404', function () {
-    return view('pages.404');
-});
+// Old or short URLs
+Route::redirect('/blog', '/');
+Route::redirect('/testimonials', '/');
+Route::redirect('/3d', '/');
+Route::redirect('/service', '/services', 301);
+Route::redirect('/project', '/projects', 301);
+Route::redirect('/ai', '/assistant', 301);
+Route::redirect('/chat', '/assistant', 301);

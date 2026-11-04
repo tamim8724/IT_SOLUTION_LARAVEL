@@ -1,0 +1,57 @@
+
+/* Equal Team Cards */
+.team-carousel .owl-stage {
+    display: flex !important;
+    align-items: stretch !important;
+}
+
+.team-carousel .owl-item {
+    display: flex !important;
+    height: auto !important;
+}
+
+.team-carousel .team-item {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.team-carousel .team-content,
+.team-carousel .team-img-icon {
+    height: 100% !important;
+}
+
+.team-carousel .team-img-icon {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center;
+}
+
+.team-carousel .team-img {
+    width: 180px !important;
+    height: 180px !important;
+    overflow: hidden !important;
+    border-radius: 50% !important;
+}
+
+.team-carousel .team-img img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+.team-carousel .team-name {
+    width: 100%;
+    flex-grow: 1;
+}
+
+.team-carousel .team-name h4 {
+    min-height: 58px;
+}
+
+.team-carousel .team-name p {
+    min-height: 48px;
+}
+
+.team-carousel .team-icon {
+    margin-top: auto;
+}

@@ -3,10 +3,39 @@
 
 <head>
     <meta charset="utf-8">
-    <title>@yield('title', 'HighTech - IT Solutions Website Template')</title>
+    @php
+        $pageTitle = trim($__env->yieldContent('title'));
+        $fullTitle = !$pageTitle ? 'e-Trust | Web Design & Development Company in Dhaka & Sydney'
+            : (str_contains($pageTitle, 'e-Trust') ? $pageTitle : $pageTitle . ' | e-Trust');
+        $metaDescription = trim($__env->yieldContent('description')) ?: 'e-Trust is a Dhaka-based IT solutions firm offering web design, web development, UI/UX design, web security, digital marketing and custom programming for businesses of every size.';
+    @endphp
+    <title>{{ $fullTitle }}</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="" name="keywords">
-    <meta content="" name="description">
+    <meta name="description" content="{{ $metaDescription }}">
+    <meta name="keywords" content="e-Trust, web design company in Dhaka, web development company in Bangladesh, website design Bangladesh, IT company in Dhaka, Laravel developer Bangladesh, e-commerce website Bangladesh, SEO services Dhaka, web design Sydney, web developer Sydney, small business website Sydney, website security">
+    <meta name="robots" content="index, follow">
+    <meta name="geo.region" content="BD-13">
+    <meta name="geo.placename" content="Dhaka">
+    <meta name="author" content="e-Trust">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    <!-- Open Graph (link previews on Facebook, Messenger, LinkedIn) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="e-Trust">
+    <meta property="og:title" content="{{ $fullTitle }}">
+    <meta property="og:description" content="{{ $metaDescription }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('img/carousel-1.jpg') }}">
+    <meta property="og:locale" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="theme-color" content="#1842b6">
+
+    @include('partials.seo-schema')
+
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}" sizes="any">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('favicon.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('img/apple-touch-icon.png') }}">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,7 +69,7 @@
 @include('partials.footer')
 
 <!-- Back to Top -->
-<a href="#" class="btn btn-secondary btn-square rounded-circle back-to-top"><i class="fa fa-arrow-up text-white"></i></a>
+<a href="#" class="btn btn-secondary btn-square rounded-circle back-to-top" aria-label="Back to top"><i class="fa fa-arrow-up text-white"></i></a>
 
 <!-- JavaScript Libraries -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>

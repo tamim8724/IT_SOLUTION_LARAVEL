@@ -1,3 +1,4 @@
+{{-- ARCHIVED: not linked from any route. Kept for future use (add a route in routes/web.php to enable). --}}
 @extends('layouts.app')
 
 @section('title', 'Our Blog')
