@@ -176,9 +176,9 @@ return [
     */
     'ai' => [
         'order'        => env('AI_ORDER', 'groq,gemini,openrouter,claude,chatgpt,hermes,deepseek,mistral,grok,custom'),
-        'max_attempts' => (int) env('AI_MAX_ATTEMPTS', 3),
-        'max_tokens'   => (int) env('AI_MAX_TOKENS', 900),
-        'timeout'      => (int) env('AI_TIMEOUT', 40),
+        'max_attempts' => (int) env('AI_MAX_ATTEMPTS', 2),
+        'max_tokens'   => (int) env('AI_MAX_TOKENS', 700),
+        'timeout'      => (int) env('AI_TIMEOUT', 20),
         // Fair-use limits per visitor (IP address) and for the whole site per day
         'per_minute'     => (int) env('AI_LIMIT_PER_MINUTE', 8),
         'per_day'        => (int) env('AI_LIMIT_PER_DAY', 150),

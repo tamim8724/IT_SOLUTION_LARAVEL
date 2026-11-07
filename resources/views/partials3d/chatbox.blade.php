@@ -36,6 +36,18 @@
         @endif
     </div>
 
+    @if (count($aiModels) > 1)
+        <div class="chatbox__model">
+            <label for="chat-model-{{ $variant }}">Answer with</label>
+            <select id="chat-model-{{ $variant }}" data-chat-model>
+                <option value="">Auto (best available)</option>
+                @foreach ($aiModels as $key => $label)
+                    <option value="{{ $key }}">{{ $label }}</option>
+                @endforeach
+            </select>
+        </div>
+    @endif
+
     <form class="chatbox__form" data-chat-form>
         <label class="sr-only" for="chat-input-{{ $variant }}">Your message</label>
         <textarea id="chat-input-{{ $variant }}" rows="1" maxlength="2000" placeholder="Ask anything, in Bangla or English" data-chat-input></textarea>
@@ -43,5 +55,5 @@
             <svg class="icon" aria-hidden="true"><use href="#i-send"/></svg><span class="sr-only">Send</span>
         </button>
     </form>
-       <p class="chatbox__note">e-Trust AI is new and can make mistakes. Please check important information.</p>
+    <p class="chatbox__note">e-Trust AI is new and can make mistakes. Please check important information.</p>
 </div>

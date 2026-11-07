@@ -45,7 +45,7 @@
 {{-- Structured data so Google can show these questions directly in search results --}}
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@' . 'context' => 'https://schema.org',
     '@type' => 'FAQPage',
     'mainEntity' => array_map(fn ($f) => [
         '@type' => 'Question',

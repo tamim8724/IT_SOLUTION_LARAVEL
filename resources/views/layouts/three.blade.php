@@ -17,7 +17,9 @@
 <meta name="robots" content="@yield('robots', 'index, follow')">
 <meta name="geo.region" content="BD-13">
 <meta name="geo.placename" content="Dhaka">
+@unless (str_contains($__env->yieldContent('robots'), 'noindex'))
 <link rel="canonical" href="{{ url()->current() }}">
+@endunless
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="e-Trust">
 <meta property="og:title" content="{{ $fullTitle }}">
@@ -34,8 +36,8 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Archivo:wght@400;500;600&display=swap" rel="stylesheet">
-<link href="{{ asset('css/three-site.css') }}?v=4" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="{{ asset('css/three-site.css') }}?v=5" rel="stylesheet">
 <script type="importmap">
 { "imports": {
   "three": "{{ asset('js/vendor/three/three.module.min.js') }}",
@@ -70,6 +72,6 @@
 </script>
 <script src="{{ asset('js/site-nav.js') }}?v=4" defer></script>
 <script src="{{ asset('js/chat.js') }}?v=4" defer></script>
-<script type="module" src="{{ asset('js/three-site.js') }}?v=4"></script>
+<script type="module" src="{{ asset('js/three-site.js') }}?v=5"></script>
 </body>
 </html>

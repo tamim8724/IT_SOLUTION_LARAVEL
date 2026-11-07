@@ -65,90 +65,45 @@ class AiAssistant
         foreach ($tries as $key) {
             $p = $cfg['providers'][$key];
             try {
-                // $text = ($p['type'] ?? 'openai') === 'anthropic'
-                //     ? $this->callAnthropic($p, $messages)
-                //     : $this->callOpenAiCompatible($p, $messages);
-                if ($key === 'gemini') {
-                    $text = $this->callGemini($p, $messages);
-                } elseif (($p['type'] ?? 'openai') === 'anthropic') {
-                    $text = $this->callAnthropic($p, $messages);
-                } else {
-                    $text = $this->callOpenAiCompatible($p, $messages);
-                }
+                $text = ($p['type'] ?? 'openai') === 'anthropic'
+                    ? $this->callAnthropic($p, $messages)
+                    : $this->callOpenAiCompatible($p, $messages);
 
                 $text = trim(preg_replace('/<think>.*?<\/think>/s', '', (string) $text));
                 if ($text !== '') {
                     return ['reply' => $text, 'source' => $key, 'label' => $p['label']];
                 }
             } catch (Throwable $e) {
-                Log::warning('AI provider failed', ['provider' => $key, 'error' => mb_substr($e->getMessage(), 0, 300)]);
+                Log::error('AI provider failed', ['provider' => $key, 'error' => mb_substr($e->getMessage(), 0, 300)]);
             }
         }
 
         return ['reply' => $this->localReply($lastUser, true), 'source' => 'local', 'label' => 'e-Trust (built-in)'];
     }
 
-private function callGemini(array $p, array $messages): string
-{
-    $cfg = config('etrust.ai');
+    /**
+     * Try every configured provider once and report what happened (used by `php artisan ai:test`).
+     * Returns [key => ['label' => ..., 'ok' => bool, 'detail' => reply or error]].
+     */
+    public function diagnose(): array
+    {
+        $cfg = config('etrust.ai');
+        $out = [];
+        $msg = [['role' => 'user', 'content' => 'Reply with just: OK']];
+        foreach ($this->available() as $key => $label) {
+            $p = $cfg['providers'][$key];
+            $t0 = microtime(true);
+            try {
+                $text = ($p['type'] ?? 'openai') === 'anthropic' ? $this->callAnthropic($p, $msg) : $this->callOpenAiCompatible($p, $msg);
+                $out[$key] = ['label' => $label, 'model' => $p['model'], 'ok' => trim($text) !== '', 'detail' => mb_substr(trim($text), 0, 80) ?: 'Empty reply'];
+            } catch (Throwable $e) {
+                $out[$key] = ['label' => $label, 'model' => $p['model'], 'ok' => false, 'detail' => mb_substr($e->getMessage(), 0, 400)];
+            }
+            $out[$key]['seconds'] = round(microtime(true) - $t0, 1);
+        }
 
-    $contents = [];
-
-    foreach ($messages as $message) {
-        $role = ($message['role'] ?? 'user') === 'assistant'
-            ? 'model'
-            : 'user';
-
-        $contents[] = [
-            'role' => $role,
-            'parts' => [
-                ['text' => (string) ($message['content'] ?? '')]
-            ],
-        ];
+        return $out;
     }
-
-    if (empty($contents)) {
-        throw new \RuntimeException('No messages provided.');
-    }
-
-    $model = preg_replace('#^models/#', '', $p['model']);
-
-    $url = 'https://generativelanguage.googleapis.com/v1beta/models/'
-        . rawurlencode($model)
-        . ':generateContent';
-
-    $response = Http::withHeaders([
-        'x-goog-api-key' => $p['api_key'],
-    ])
-        ->acceptJson()
-        ->connectTimeout(8)
-        ->timeout((int) $cfg['timeout'])
-        ->post($url, [
-            'systemInstruction' => [
-                'parts' => [
-                    ['text' => $this->systemPrompt()]
-                ]
-            ],
-            'contents' => $contents,
-            'generationConfig' => [
-                'maxOutputTokens' => (int) $cfg['max_tokens'],
-            ],
-        ]);
-
-    if (! $response->successful()) {
-        throw new \RuntimeException(
-            'Gemini HTTP ' . $response->status() . ': '
-            . mb_substr($response->body(), 0, 300)
-        );
-    }
-
-    $text = collect($response->json('candidates.0.content.parts', []))
-        ->pluck('text')
-        ->filter()
-        ->implode("\n");
-
-    return trim($text);
-}
 
     /** OpenAI, Groq, Gemini, OpenRouter, Nous (Hermes), DeepSeek, Mistral, xAI and any compatible API */
     private function callOpenAiCompatible(array $p, array $messages): string
@@ -175,7 +130,7 @@ private function callGemini(array $p, array $messages): string
             ->withHeaders($headers)
             ->acceptJson()
             ->timeout($cfg['timeout'])
-            ->connectTimeout(8)
+            ->connectTimeout(4)
             ->post(rtrim($p['base_url'], '/') . '/chat/completions', $body);
 
         if (! $res->successful()) {
@@ -209,7 +164,7 @@ private function callGemini(array $p, array $messages): string
         ])
             ->acceptJson()
             ->timeout($cfg['timeout'])
-            ->connectTimeout(8)
+            ->connectTimeout(4)
             ->post(rtrim($p['base_url'], '/') . '/messages', [
                 'model'      => $p['model'],
                 'max_tokens' => $cfg['max_tokens'],
@@ -227,8 +182,8 @@ private function callGemini(array $p, array $messages): string
     public function systemPrompt(): string
     {
         $c = config('etrust');
-        $services = collect($c['services'])->map(fn($s) => "- {$s['title']}: {$s['short']}")->implode("\n");
-        $products = collect($c['dorkari']['products'])->map(fn($p) => "- {$p['name']} ({$p['bn']}): {$p['text']}")->implode("\n");
+        $services = collect($c['services'])->map(fn ($s) => "- {$s['title']}: {$s['short']}")->implode("\n");
+        $products = collect($c['dorkari']['products'])->map(fn ($p) => "- {$p['name']} ({$p['bn']}): {$p['text']}")->implode("\n");
         $today = now('Asia/Dhaka')->format('l, j F Y');
 
         return <<<PROMPT
@@ -264,13 +219,13 @@ PROMPT;
         $c = config('etrust');
         $bn = (bool) preg_match('/[\x{0980}-\x{09FF}]/u', $text);
         $t = mb_strtolower($text);
-        $has = fn(array $words) => collect($words)->contains(fn($w) => str_contains($t, $w));
+        $has = fn (array $words) => collect($words)->contains(fn ($w) => str_contains($t, $w));
 
         $contactEn = "You can reach the team at **{$c['contact']['email']}** or **{$c['contact']['phone']}** (call or WhatsApp), or use the [contact form](/contact).";
         $contactBn = "আমাদের টিমের সাথে যোগাযোগ করুন: **{$c['contact']['email']}** অথবা **{$c['contact']['phone']}** (কল বা WhatsApp), কিংবা [যোগাযোগ ফর্ম](/contact) ব্যবহার করুন।";
 
         if ($has(['dorkari', 'দরকারি', 'khata', 'খাতা', 'dorji', 'দর্জি', 'takahisab', 'বিকিকিনি', 'bikikini'])) {
-            $list = collect($c['dorkari']['products'])->map(fn($p) => $bn ? "- **{$p['bn']}** ({$p['name']})" : "- **{$p['name']}** ({$p['bn']}): {$p['text']}")->implode("\n");
+            $list = collect($c['dorkari']['products'])->map(fn ($p) => $bn ? "- **{$p['bn']}** ({$p['name']})" : "- **{$p['name']}** ({$p['bn']}): {$p['text']}")->implode("\n");
 
             return $bn
                 ? "**DORKARI (দরকারি)** হলো e-Trust-এর নিজস্ব প্ল্যাটফর্ম: এক অ্যাকাউন্টে প্রতিদিনের দরকারি সব টুল।\n\n{$list}\n\nবিস্তারিত দেখুন: [dorkari.e-trust.online]({$c['dorkari']['url']})"
@@ -290,7 +245,7 @@ PROMPT;
         }
 
         if ($has(['service', 'website', 'web', 'app', 'software', 'security', 'seo', 'marketing', 'design', 'hosting', 'সেবা', 'সার্ভিস', 'ওয়েবসাইট', 'অ্যাপ', 'সফটওয়্যার', 'নিরাপত্তা'])) {
-            $list = collect($c['services'])->map(fn($s) => "- **{$s['title']}**: {$s['short']}")->implode("\n");
+            $list = collect($c['services'])->map(fn ($s) => "- **{$s['title']}**: {$s['short']}")->implode("\n");
 
             return $bn
                 ? "e-Trust যেসব সেবা দেয়:\n\n{$list}\n\n{$contactBn}"

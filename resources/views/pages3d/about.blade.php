@@ -61,16 +61,16 @@
             <p class="lead">One team, two cities. Same quality and honest pricing, wherever your business is.</p>
             <div class="grid2" style="margin-top:26px">
                 <div>
-                    <h2 style="margin:0;font-size:22px">Bangladesh &middot; Dhaka</h2>
-                    <ul class="checks" style="font-size:15px">
+                    <h3 style="margin:0">Bangladesh &middot; Dhaka</h3>
+                    <ul class="checks">
                         <li>Website design &amp; development</li>
                         <li>Laravel &amp; PHP web apps</li>
                         <li>SEO for Bangladeshi businesses</li>
                     </ul>
                 </div>
                 <div>
-                    <h2 style="margin:0;font-size:22px">Australia &middot; Sydney</h2>
-                    <ul class="checks" style="font-size:15px">
+                    <h3 style="margin:0">Australia &middot; Sydney</h3>
+                    <ul class="checks">
                         <li>Small business websites</li>
                         <li>Redesign &amp; ongoing development</li>
                         <li>Local SEO &amp; web security</li>

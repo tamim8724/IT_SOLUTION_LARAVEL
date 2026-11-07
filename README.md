@@ -54,3 +54,13 @@ php artisan serve
 
 Open http://127.0.0.1:8000. For local use set `APP_ENV=local` in `.env` (production forces https).
 `bootstrap/polyfills.php` adds `mb_split()` for lightweight PHP builds (php.new / Herd Lite).
+
+## AI troubleshooting
+
+Run `php artisan ai:test`. It tries every AI key you set and prints OK or the exact error.
+
+- `HTTP 401` / invalid key: copy the key again (no spaces or quotes), then `php artisan config:clear`.
+- `HTTP 429`: free limit used up; wait, or add a second provider (e.g. GEMINI_API_KEY).
+- `cURL error 60` (common on Windows): PHP cannot verify SSL. Download https://curl.se/ca/cacert.pem, then in the php.ini shown by `php --ini` add:
+  `curl.cainfo="C:\path\to\cacert.pem"` and `openssl.cafile="C:\path\to\cacert.pem"`, then restart `php artisan serve`.
+- curl: NO: enable `extension=curl` in php.ini.

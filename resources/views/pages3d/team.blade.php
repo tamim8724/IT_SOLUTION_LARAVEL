@@ -43,7 +43,7 @@
             <div class="col">
                 <span class="tag">{{ $m['role'] }}</span>
                 <h2 class="display mid" style="margin-top:12px">{{ $m['name'] }}</h2>
-                <p class="body" style="color:inherit;font-size:19px">{{ $m['bio'] }}</p>
+                <p class="body" style="color:inherit">{{ $m['bio'] }}</p>
                 <div class="socials">
                     @if ($m['profile'])
                         <a href="{{ $m['profile'] }}" target="_blank" rel="noopener noreferrer">Portfolio</a>

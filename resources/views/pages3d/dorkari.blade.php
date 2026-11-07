@@ -34,7 +34,7 @@
 @push('head')
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@' . 'context' => 'https://schema.org',
     '@type' => 'SoftwareApplication',
     'name' => 'DORKARI',
     'alternateName' => 'দরকারি',
@@ -51,7 +51,7 @@
 <section class="story hero" data-k="hero">
     <div class="wrap">
         <p class="eyebrow" style="color:var(--accent)">Our product</p>
-        <h1 class="display big" style="max-width:8em">DORKARI <span class="dk-bn" style="font-family:'Hind Siliguri',sans-serif;text-transform:none;display:block;font-size:.55em;color:var(--accent);line-height:1.2">দরকারি</span></h1>
+        <h1 class="display big" style="max-width:8em">DORKARI <span class="h-bn" lang="bn" style="color:var(--accent)">দরকারি</span></h1>
         <p class="lead" style="max-width:26ch">{{ $dk['tagline'] }}</p>
         <p class="body" style="max-width:46ch">{{ $dk['text'] }}</p>
         <div class="actions" style="align-items:center">
@@ -67,8 +67,8 @@
             <div class="col">
                 <div class="dk-swatch" style="background:{{ $p['color'] }}" aria-hidden="true">{{ mb_substr($p['bn'], 0, 1) }}</div>
                 <span class="tag" style="color:{{ $p['color'] }}">{{ sprintf('%02d', $i + 1) }} / {{ sprintf('%02d', $n) }}</span>
-                <h2 class="display mid" style="margin-top:10px">{{ $p['name'] }} <span class="dk-bn" lang="bn" style="text-transform:none;font-size:.6em;color:{{ $p['color'] }}">{{ $p['bn'] }}</span></h2>
-                <p class="body" style="color:inherit;font-size:19px">{{ $p['text'] }}</p>
+                <h2 class="display mid" style="margin-top:10px">{{ $p['name'] }} <span class="dk-bn" lang="bn" style="color:{{ $p['color'] }}">{{ $p['bn'] }}</span></h2>
+                <p class="body" style="color:inherit">{{ $p['text'] }}</p>
             </div>
         </div>
     </section>

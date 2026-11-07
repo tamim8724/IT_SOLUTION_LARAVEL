@@ -1,7 +1,9 @@
 <footer class="footer panel" data-k="footer">
     <div class="wrap">
-        <div class="label">&nbsp;</div>
-        <h2>e-Trust<br>IT Solutions</h2>
+        <a class="foot-brand" href="{{ url('/') }}" aria-label="e-trust.online home">
+            @include('partials3d.mark')
+            <span>e-trust<b>.</b>online<small>e-Trust IT Solutions</small></span>
+        </a>
         <div class="foot-grid">
             <div>
                 <a href="tel:{{ config('etrust.phone_tel') }}">{{ config('etrust.phone') }}</a>
@@ -24,7 +26,7 @@
                     <a href="https://wa.me/{{ config('etrust.contact.whatsapp') }}" target="_blank" rel="noopener noreferrer">WhatsApp</a>
                 @endif
                 <a href="{{ config('etrust.dorkari.url') }}" target="_blank" rel="noopener noreferrer">dorkari.e-trust.online</a>
-                <p class="sub" style="font-size:15px;margin-top:14px">{{ config('etrust.contact.hours') }}</p>
+                <p class="sub hours">{{ config('etrust.contact.hours') }}</p>
             </div>
         </div>
         <p class="fine">&copy; {{ date('Y') }} e-trust.online. All rights reserved. Developed by Md Muktadir Anik &amp; Tamim Ahmed.</p>

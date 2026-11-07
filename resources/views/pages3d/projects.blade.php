@@ -43,7 +43,7 @@
             <div class="col">
                 <span class="tag" style="color:{{ $p['accent'] }}">{{ sprintf('%02d', $i + 1) }} &middot; {{ $p['type'] }}</span>
                 <h2 class="display mid" style="margin-top:12px">{{ $p['title'] }}</h2>
-                <p class="body" style="color:inherit;font-size:19px">{{ $p['text'] }}</p>
+                <p class="body" style="color:inherit">{{ $p['text'] }}</p>
                 <div class="socials" style="margin-top:16px">
                     @foreach ($p['tags'] as $tg)
                         <span style="font-size:13px;font-weight:600;padding:7px 12px;border-radius:999px;border:1.5px solid var(--line)">{{ $tg }}</span>

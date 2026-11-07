@@ -111,7 +111,7 @@
 <section class="pad" data-k="promise">
     <div class="wrap">
         <div class="label">Our Vision</div>
-        <h2 class="muted" style="font-size:clamp(22px,2.4vw,30px);font-weight:500;margin:26px 0 40px">Where we are heading.</h2>
+        <p class="lead muted" style="margin:26px 0 40px">Where we are heading.</p>
         <div class="quote-mark" aria-hidden="true">&ldquo;</div>
         <blockquote>To become a security-first technology partner, born in Bangladesh and trusted on both sides of the world, that businesses turn to first when they need to grow online.</blockquote>
         <p class="muted" style="margin-top:24px">Md Muktadir Anik &amp; Tamim Ahmed, Founders</p>
@@ -122,8 +122,8 @@
     <div class="wrap">
         <div class="col">
             <div class="label">Our Product</div>
-            <h2 class="display mid" style="margin-top:22px">DORKARI <span lang="bn" style="text-transform:none;font-family:'Hind Siliguri',sans-serif;font-size:.6em">দরকারি</span></h2>
-            <p class="lead" style="font-size:clamp(20px,2vw,26px)">{{ config('etrust.dorkari.tagline') }}</p>
+            <h2 class="display mid" style="margin-top:22px">DORKARI <span lang="bn" class="dk-bn">দরকারি</span></h2>
+            <p class="lead">{{ config('etrust.dorkari.tagline') }}</p>
             <p class="body">{{ config('etrust.dorkari.text') }}</p>
             <div class="dk-grid" style="grid-template-columns:repeat(4,minmax(0,1fr));gap:8px">
                 @foreach (config('etrust.dorkari.products') as $p)
@@ -139,8 +139,8 @@
     <div class="wrap">
         <div class="col">
             <div class="label">Free AI Assistant</div>
-            <h2 class="display mid" style="margin-top:22px">Ask anything. <span lang="bn" style="text-transform:none;font-family:'Hind Siliguri',sans-serif;font-size:.6em;display:block;line-height:1.3">যেকোনো প্রশ্ন করুন।</span></h2>
-            <p class="body" style="color:inherit;font-size:19px">Our free AI assistant answers in Bangla or English: study, business, writing, coding and staying safe online.</p>
+            <h2 class="display mid" style="margin-top:22px">Ask anything. <span lang="bn" class="h-bn">যেকোনো প্রশ্ন করুন।</span></h2>
+            <p class="body" style="color:inherit">Our free AI assistant answers in Bangla or English: study, business, writing, coding and staying safe online.</p>
             <div class="actions">
                 <a class="pill" href="{{ url('/assistant') }}">Open AI Assistant <span>&rarr;</span></a>
                 <button type="button" class="ghost" style="background:none;color:inherit;font:inherit;cursor:pointer" onclick="document.querySelector('[data-chat-open]')?.click()">Chat here</button>
@@ -153,7 +153,7 @@
     <div class="wrap">
         <h2 class="display big" style="max-width:8em">Let's build something great.</h2>
         <div class="actions"><a class="pill" href="{{ url('/contact') }}#message">Start a project <span>&rarr;</span></a></div>
-        <p class="muted" style="margin-top:12px;font-size:14px"><a href="mailto:{{ config('etrust.email') }}">{{ config('etrust.email') }}</a> &middot; <a href="tel:{{ config('etrust.phone_tel') }}">{{ config('etrust.phone') }}</a></p>
+        <p class="muted small" style="margin-top:12px"><a href="mailto:{{ config('etrust.email') }}">{{ config('etrust.email') }}</a> &middot; <a href="tel:{{ config('etrust.phone_tel') }}">{{ config('etrust.phone') }}</a></p>
         <div class="signoff">
             <div class="roundel">@include('partials3d.mark')</div>
             <p>e-Trust IT solutions.<br>Dhaka &middot; Sydney.</p>

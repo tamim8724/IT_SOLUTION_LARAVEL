@@ -1,7 +1,7 @@
 {{-- Business details for Google (Knowledge panel / local search) --}}
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@' . 'context' => 'https://schema.org',
     '@graph' => [
         [
             '@type' => 'ProfessionalService',

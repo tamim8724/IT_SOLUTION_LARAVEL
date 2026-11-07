@@ -34,7 +34,7 @@
 @push('head')
 <script type="application/ld+json">
 {!! json_encode([
-    '@context' => 'https://schema.org',
+    '@' . 'context' => 'https://schema.org',
     '@type' => 'FAQPage',
     'mainEntity' => array_map(fn ($f) => ['@type' => 'Question', 'name' => $f[0], 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $f[1]]], $faqs),
 ], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}
@@ -49,7 +49,7 @@
         <p class="lead" style="max-width:24ch">Seven services, one trusted team in Dhaka, for clients in Bangladesh and Sydney.</p>
         <ol class="svc" style="gap:10px;margin-top:26px">
             @foreach ($services as $i => $s)
-                <li style="align-items:center"><span class="n" style="font-size:22px">{{ sprintf('%02d', $i + 1) }}</span><h3 style="font-size:18px"><a href="#s{{ $i }}" style="text-decoration:none">{{ $s['title'] }}</a></h3></li>
+                <li style="align-items:center"><span class="n n-sm">{{ sprintf('%02d', $i + 1) }}</span><h3><a href="#s{{ $i }}" style="text-decoration:none">{{ $s['title'] }}</a></h3></li>
             @endforeach
         </ol>
     </div>
@@ -61,8 +61,8 @@
             <div class="col">
                 <div class="big-n" aria-hidden="true">{{ sprintf('%02d', $i + 1) }}</div>
                 <h2 class="display mid" style="margin-top:14px">{{ $s['title'] }}</h2>
-                <p class="lead" style="font-size:clamp(19px,1.8vw,24px);margin-top:14px">{{ $s['short'] }}</p>
-                <p class="body" style="color:inherit;font-size:19px">{{ $s['text'] }}</p>
+                <p class="lead" style="margin-top:14px">{{ $s['short'] }}</p>
+                <p class="body" style="color:inherit">{{ $s['text'] }}</p>
                 <ul class="checks">
                     @foreach ($s['points'] as $pt)
                         <li>{{ $pt }}</li>
