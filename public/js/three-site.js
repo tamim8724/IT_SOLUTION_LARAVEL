@@ -120,10 +120,14 @@ function buildLogo() {
       logo.add(new THREE.Mesh(g, mats[part]));
     }
   });
-  const floor = makeFloor(stage);
+  // S.floor === false: no shadow/stripes under the logo (full-screen look)
+  const floor = S.floor === false ? { set() {} } : makeFloor(stage);
   return {
     update(p, t, ptr, idle) {
       const [x, y, z, rx, ry, rz, sc, colr, st] = p;
+      // optional 10th value: opacity (lets text read clearly when the logo passes behind it)
+      const op = p.length > 9 ? p[9] : 1;
+      for (const m of [mats.g, mats.b]) { const tr = op < 0.999; if (m.transparent !== tr) { m.transparent = tr; m.depthWrite = !tr; m.needsUpdate = true; } m.opacity = op; }
       stage.position.set(x, y + Math.sin(t * 0.9) * 0.05 * idle, z);
       stage.scale.setScalar(sc);
       logo.rotation.set(rx + ptr.y * 0.12 * idle, ry + Math.sin(t * 0.5) * 0.06 * idle + ptr.x * 0.25 * idle, rz);
@@ -340,28 +344,34 @@ function buildServices() {
 
   const MAKERS = { browser, code, phone, shield, chart, gears, spark, pen, cloud };
   const items = (S.shapes && S.shapes.length ? S.shapes : ['browser', 'code', 'phone', 'shield', 'chart', 'gears']).map(n => (MAKERS[n] || browser)());
-  const N = items.length, STEP = (Math.PI * 2) / N, Rr = N > 6 ? 2.9 : 2.7;
-  items.forEach((it, i) => {
-    const holder = new THREE.Group(); const a = i * STEP;
-    holder.position.set(Math.sin(a) * Rr, 0, Math.cos(a) * Rr); holder.rotation.y = a;
-    holder.add(it); ring.add(holder); it.userData.i = i;
-  });
-  const floor = makeFloor(root, -1.6, 4.4);
+  const N = items.length;
+  const cols = Math.ceil(N / 2);
+  const grid = items.map((_, i) => { const r = i < cols ? 0 : 1; const ci = r ? i - cols : i; const cn = r ? N - cols : cols;
+    return [(ci - (cn - 1) / 2) * 1.95 + (r ? 0.5 : 0), r ? -0.85 : 0.95, r ? 0.3 : 0]; });
+  items.forEach((it, i) => { const holder = new THREE.Group(); holder.add(it); ring.add(holder); it.userData.i = i; });
+  // pedestal
+  const ped = new THREE.Group(); ped.position.set(0, -1.12, 0); root.add(ped);
+  const top = new THREE.Mesh(new THREE.CylinderGeometry(1.35, 1.42, 0.16, 64), phys(new THREE.Color('#eef2f0'), { roughness: 0.35 })); ped.add(top);
+  const rimM = new THREE.Mesh(new THREE.TorusGeometry(1.36, 0.035, 12, 96), new THREE.MeshStandardMaterial({ color: TH.accent2, emissive: TH.accent2, emissiveIntensity: 0.25 })); rimM.rotation.x = Math.PI / 2; rimM.position.y = 0.08; ped.add(rimM);
+  const floor = S.floor === false ? { set() {} } : makeFloor(root, -1.6, 4.4);
   return {
     update(p, t, ptr, idle) {
       const [x, y, z, rx, ry, rz, sc, act, spread] = p;
       root.position.set(x, y, z); root.scale.setScalar(sc);
-      root.rotation.set(rx + ptr.y * 0.08 * idle, ptr.x * 0.15 * idle, rz);
-      ring.rotation.y = -act * STEP + ry;
+      root.rotation.set(rx + ptr.y * 0.08 * idle, ptr.x * 0.15 * idle + ry, rz);
+      const sp = clamp01(spread);
       ring.children.forEach((h, i) => {
         const it = h.children[0];
-        let d = Math.abs(i - act) % N; d = Math.min(d, N - d);
-        const s = lerp(1.18, 0.72, clamp01(d));
-        it.scale.setScalar(s * lerp(1, 0.85, 1 - spread));
+        const d = Math.abs(i - act);
+        const focus = clamp01(1 - d * 1.6);
+        const g = grid[i];
+        h.position.set(lerp(0, g[0], sp), lerp(-0.15 + (1 - focus) * -0.9, g[1], sp), lerp(0, g[2], sp));
+        it.scale.setScalar(lerp(focus * 1.35, 0.72, sp) + 0.0001);
         it.position.y = Math.sin(t * 1.1 + i) * 0.06 * idle;
-        it.rotation.y = Math.sin(t * 0.6 + i) * 0.25 * idle;
+        it.rotation.y = Math.sin(t * 0.6 + i) * 0.25 * idle - 0.25;
         it.traverse(o => { if (o.userData.rot) o.rotation.z = t * 0.6 * o.userData.rot; if (o.userData.base !== undefined) o.position.z = o.userData.base + Math.sin(t * 1.4 + o.position.y * 4) * 0.05 * idle; });
       });
+      ped.scale.setScalar(Math.max(0.0001, 1 - sp));
       floor.set(spread);
     },
   };
@@ -464,7 +474,7 @@ function buildTeam() {
   pg.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
   const dots = new THREE.Points(pg, new THREE.PointsMaterial({ color: TH.accent, size: 0.05, transparent: true, opacity: 0.7 }));
   root.add(dots);
-  const floor = makeFloor(root, -1.45, 4.6);
+  const floor = S.floor === false ? { set() {} } : makeFloor(root, -1.45, 4.6);
   return {
     update(p, t, ptr, idle) {
       const [x, y, z, rx, ry, rz, sc, act, ln] = p;
@@ -634,12 +644,14 @@ const obj = (BUILDERS[S.type] || buildLogo)();
 /* ---------- scroll choreography ---------- */
 const sections = [...document.querySelectorAll('[data-k]')];
 let anchors = [], mobile = false;
-const pose = k => (mobile && S.mobile && S.mobile[k]) || (S.poses && S.poses[k]);
+let mid = false; // laptops / tablets in landscape: optional S.mid poses
+const pose = k => (mobile && S.mobile && S.mobile[k]) || (mid && S.mid && S.mid[k]) || (S.poses && S.poses[k]);
 function layout() {
   const w = innerWidth, h = innerHeight;
   renderer.setSize(w, h, false);
   camera.aspect = w / h; camera.updateProjectionMatrix();
   mobile = w / h < 0.85;
+  mid = !mobile && w / h < 1.5;
   anchors = sections
     .map(el => { const r = el.getBoundingClientRect(); return { k: el.dataset.k, at: r.top + scrollY + Math.min(r.height, h) * 0.5 }; })
     .filter(a => pose(a.k));
@@ -652,7 +664,7 @@ function target() {
   if (s <= anchors[0].at) return pose(anchors[0].k).slice();
   for (let i = 0; i < anchors.length - 1; i++) {
     const a = anchors[i], b = anchors[i + 1];
-    if (s < b.at) { const t = smooth((s - a.at) / (b.at - a.at)); const pa = pose(a.k), pb = pose(b.k); return pa.map((v, j) => v + (pb[j] - v) * t); }
+    if (s < b.at) { let t = smooth((s - a.at) / (b.at - a.at)); if (window.__shot) t = t < 0.5 ? 0 : 1; const pa = pose(a.k), pb = pose(b.k); return pa.map((v, j) => v + (pb[j] - v) * t); }
   }
   return pose(anchors[anchors.length - 1].k).slice();
 }

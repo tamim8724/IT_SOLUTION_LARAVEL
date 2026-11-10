@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brightline Electrical, Sydney — Concept project by e-Trust</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f7f9;--ink:#0f1a2b;--muted:#5b6678;--y:#ffc21a;--navy:#10244a;--line:rgba(15,26,43,.1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3{letter-spacing:-.03em;line-height:1.05;font-weight:800}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,48px)}
+.concept{background:var(--ink);color:#fff;font-size:12.5px;text-align:center;padding:7px 12px}.concept b{color:var(--y)}
+.top{background:var(--y);font-size:13.5px;font-weight:600}
+.top .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;padding-top:8px;padding-bottom:8px}
+nav{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+nav .wrap{display:flex;align-items:center;gap:24px;height:72px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px}
+.logo i{width:36px;height:36px;border-radius:10px;background:var(--navy);display:grid;place-items:center;color:var(--y);font-style:normal;font-size:20px}
+nav .links{display:flex;gap:24px;margin-left:auto;font-size:15px;font-weight:500}
+.call{height:46px;padding:0 18px;border-radius:12px;background:var(--y);font-weight:800;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.hero{background:linear-gradient(135deg,#10244a,#0b1830);color:#fff;overflow:hidden;position:relative}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-top:clamp(50px,7vw,90px);padding-bottom:clamp(50px,7vw,90px)}
+.pill{display:inline-flex;align-items:center;gap:8px;background:rgba(255,194,26,.15);color:var(--y);border:1px solid rgba(255,194,26,.4);border-radius:999px;padding:6px 14px;font-size:13px;font-weight:700}
+.hero h1{font-size:clamp(40px,5.4vw,72px);margin:18px 0 16px}
+.hero h1 span{color:var(--y)}
+.hero p{color:#c6d0e2;font-size:clamp(16px,1.4vw,19px);max-width:42ch}
+.acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.ghost{height:46px;padding:0 18px;border-radius:12px;border:1.5px solid #fff;font-weight:700;display:inline-flex;align-items:center}
+.ticks{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:26px;font-size:14px;color:#dfe5ef;font-weight:500}
+.ticks span:before{content:"✓ ";color:var(--y);font-weight:800}
+.quote{background:#fff;color:var(--ink);border-radius:20px;padding:26px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.quote h3{font-size:22px}
+.quote p.s{color:var(--muted);font-size:14px;margin:4px 0 14px}
+.quote label{display:block;font-size:13px;font-weight:600;margin:10px 0 5px}
+.quote .in{height:46px;border:1.5px solid #d6dbe3;border-radius:10px;display:flex;align-items:center;padding:0 12px;color:#8a93a3;font-size:14.5px}
+.quote button{width:100%;height:50px;border:0;border-radius:12px;background:var(--navy);color:#fff;font-weight:700;font-size:16px;margin-top:16px;cursor:pointer}
+section{padding:clamp(60px,8vw,100px) 0}
+.kick{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:#c48a00;font-weight:800}
+.h2{font-size:clamp(30px,3.6vw,46px);margin:10px 0 30px}
+.svc{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.svc div{background:#fff;border:1px solid var(--line);border-radius:18px;padding:24px}
+.svc i{width:48px;height:48px;border-radius:12px;background:#fff4cf;display:grid;place-items:center;font-style:normal;font-size:22px;margin-bottom:16px}
+.svc h3{font-size:19px;margin-bottom:6px}.svc p{color:var(--muted);font-size:15px}
+.band{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.band .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding-top:30px;padding-bottom:30px}
+.band b{display:block;font-size:30px;font-weight:800;color:var(--navy)}
+.band span{font-size:14px;color:var(--muted)}
+.areas{display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,70px);align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;font-weight:600;font-size:14px}
+.map{aspect-ratio:4/3;border-radius:20px;background:#dfe6f1;position:relative;overflow:hidden}
+.map svg{width:100%;height:100%;display:block}
+.emer{background:var(--y);border-radius:24px;padding:clamp(28px,4vw,48px);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px}
+.emer h2{font-size:clamp(28px,3.4vw,44px)}
+.emer p{font-weight:500}
+.emer .call{background:var(--navy);color:#fff;height:56px;font-size:17px;padding:0 24px}
+footer{padding:30px 0;font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+@media (max-width:900px){.hero .wrap,.areas{grid-template-columns:1fr}.svc{grid-template-columns:1fr 1fr}.band .wrap{grid-template-columns:1fr 1fr}nav .links{display:none}nav .call{margin-left:auto}}
+@media (max-width:560px){.svc{grid-template-columns:1fr}.acts a{flex:1;justify-content:center}.top .wrap span:last-child{display:none}}
+</style>
+</head>
+<body>
+<div class="concept">Concept project by <b>e-Trust</b> · Brightline Electrical is not a real business</div>
+<div class="top"><div class="wrap"><span>⚡ 24/7 emergency call-outs across Sydney</span><span>Licensed &amp; insured · Lic. 000000C (demo)</span></div></div>
+<nav><div class="wrap"><a class="logo" href="#"><i>⚡</i>Brightline Electrical</a><div class="links"><a href="#services">Services</a><a href="#areas">Areas</a><a href="#quote">Free quote</a></div><a class="call" href="#">📞 0400 000 000</a></div></nav>
+
+<div class="hero"><div class="wrap">
+  <div>
+    <span class="pill">⭐ Local Sydney electricians</span>
+    <h1>Fast, safe electrical work — <span>done right the first time.</span></h1>
+    <p>From a new power point to a full switchboard upgrade. Upfront pricing, on-time arrival and a clean worksite, every job.</p>
+    <div class="acts"><a class="call" href="#">📞 Call now</a><a class="ghost" href="#quote">Get a free quote</a></div>
+    <div class="ticks"><span>Upfront fixed pricing</span><span>Same-day service</span><span>Workmanship guarantee</span></div>
+  </div>
+  <form class="quote" id="quote" onsubmit="event.preventDefault();this.querySelector('button').textContent='Demo only — no request sent'">
+    <h3>Get a free quote</h3><p class="s">We reply within one hour, 7 days a week.</p>
+    <label>Name</label><div class="in">Your name</div>
+    <label>Phone</label><div class="in">04XX XXX XXX</div>
+    <label>Suburb</label><div class="in">e.g. Parramatta</div>
+    <label>What do you need?</label><div class="in">Switchboard upgrade</div>
+    <button>Request my quote</button>
+  </form>
+</div></div>
+
+<div class="band"><div class="wrap">
+  <div><b>Same day</b><span>Call-outs available</span></div>
+  <div><b>Upfront</b><span>Fixed pricing</span></div>
+  <div><b>7 days</b><span>Including weekends</span></div>
+  <div><b>Guaranteed</b><span>Workmanship</span></div>
+</div></div>
+
+<section id="services"><div class="wrap">
+  <p class="kick">What we do</p><h2 class="h2">Electrical services for homes &amp; businesses</h2>
+  <div class="svc">
+    <div><i>🔌</i><h3>Power points &amp; wiring</h3><p>New outlets, USB points, rewiring and safety checks.</p></div>
+    <div><i>⚡</i><h3>Switchboard upgrades</h3><p>Replace old fuses with modern, safety-switch protected boards.</p></div>
+    <div><i>💡</i><h3>Lighting</h3><p>LED downlights, outdoor and feature lighting, installed neatly.</p></div>
+    <div><i>🚨</i><h3>Emergency repairs</h3><p>Power outages, tripping breakers and faults — 24/7.</p></div>
+    <div><i>🔋</i><h3>EV chargers &amp; solar</h3><p>Home EV charger installs and solar-ready upgrades.</p></div>
+    <div><i>🏢</i><h3>Commercial work</h3><p>Fit-outs, test &amp; tag and maintenance for offices and shops.</p></div>
+  </div>
+</div></section>
+
+<section id="areas" style="background:#fff"><div class="wrap areas">
+  <div>
+    <p class="kick">Service areas</p><h2 class="h2">Covering all of Greater Sydney</h2>
+    <div class="chips"><span>Parramatta</span><span>Blacktown</span><span>Liverpool</span><span>Penrith</span><span>Hills District</span><span>Inner West</span><span>North Shore</span><span>Eastern Suburbs</span><span>Sutherland</span><span>Campbelltown</span></div>
+  </div>
+  <div class="map"><svg viewBox="0 0 400 300" aria-hidden="true"><rect width="400" height="300" fill="#dfe6f1"/><path d="M300 0 C320 60 360 90 400 110 L400 300 L330 300 C300 250 320 200 290 160 C260 120 280 60 300 0Z" fill="#b9d3ee"/><g stroke="#fff" stroke-width="6" fill="none"><path d="M0 150 C100 140 200 160 290 150"/><path d="M150 0 C160 100 140 200 170 300"/><path d="M40 40 C120 90 220 80 300 40"/></g><g fill="#10244a"><circle cx="170" cy="150" r="7"/><circle cx="90" cy="140" r="6"/><circle cx="230" cy="110" r="6"/><circle cx="120" cy="230" r="6"/><circle cx="250" cy="200" r="6"/></g><circle cx="170" cy="150" r="70" fill="rgba(255,194,26,.25)" stroke="#ffc21a" stroke-width="3"/></svg></div>
+</div></section>
+
+<section><div class="wrap"><div class="emer">
+  <div><h2>Power out? Sparks? Don't wait.</h2><p>Call our 24/7 emergency line — a licensed electrician will call you back fast.</p></div>
+  <a class="call" href="#">📞 0400 000 000</a>
+</div></div></section>
+
+<footer><div class="wrap"><span>© 2026 Brightline Electrical (concept)</span><span>Designed &amp; built by <b>e-trust.online</b></span></div></footer>
+</body>
+</html>

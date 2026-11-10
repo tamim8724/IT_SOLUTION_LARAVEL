@@ -1,0 +1,66 @@
+/* e-Trust: shared styles for every page (loaded after the page's own CSS) */
+
+/* ---------- fonts: Poppins everywhere, Hind Siliguri for Bangla ---------- */
+@font-face{font-family:Poppins;font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/poppins-400.woff) format("woff")}
+@font-face{font-family:Poppins;font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/poppins-500.woff) format("woff")}
+@font-face{font-family:Poppins;font-style:normal;font-weight:600 900;font-display:swap;src:url(../fonts/poppins-700.woff) format("woff")}
+@font-face{font-family:"Hind Siliguri";font-style:normal;font-weight:400;font-display:swap;src:url(../fonts/hind-siliguri-bn-400.woff2) format("woff2");unicode-range:U+0964-0965,U+0980-09FE,U+200C-200D,U+25CC}
+@font-face{font-family:"Hind Siliguri";font-style:normal;font-weight:500;font-display:swap;src:url(../fonts/hind-siliguri-bn-500.woff2) format("woff2");unicode-range:U+0964-0965,U+0980-09FE,U+200C-200D,U+25CC}
+@font-face{font-family:"Hind Siliguri";font-style:normal;font-weight:600 900;font-display:swap;src:url(../fonts/hind-siliguri-bn-600.woff2) format("woff2");unicode-range:U+0964-0965,U+0980-09FE,U+200C-200D,U+25CC}
+:where(body) *:not(code):not(pre):not(kbd):not(svg *){font-family:Poppins,"Hind Siliguri",system-ui,sans-serif!important}
+h1,h2{letter-spacing:-.025em!important;font-weight:700!important}
+h3,h4{font-weight:600!important}
+.skip{position:absolute;left:-9999px;top:8px;z-index:100;background:#0c0e13;color:#fff;padding:10px 14px;border-radius:8px}
+.skip:focus{left:12px}
+:focus-visible{outline:3px solid #2bcf8f;outline-offset:3px}
+
+/* ---------- nav: sticky, wordmark loops to "e." every 5 s ---------- */
+.nav{position:sticky!important;top:0;z-index:40!important}
+.brand .bw{display:inline-flex;align-items:baseline;white-space:nowrap}
+.brand .bw .ch{display:inline-block;overflow:hidden;max-width:1em;transition:max-width .35s cubic-bezier(.6,0,.2,1),opacity .25s,transform .35s;vertical-align:bottom}
+.nav.mini .brand .bw .ch.x{max-width:0;opacity:0;transform:translateY(35%)}
+@media (prefers-reduced-motion:reduce){.brand .bw .ch{transition:none}}
+.nav .links a[aria-current="page"]{position:relative}
+
+/* ---------- mobile menu ---------- */
+button.burger{border:0;cursor:pointer;padding:0;color:inherit}
+.mnav{position:fixed;inset:0;z-index:60;background:#0b1b3a;color:#f5f6f8;display:flex;flex-direction:column;padding:22px 22px 30px;transform:translateY(-100%);transition:transform .4s cubic-bezier(.2,.8,.2,1);visibility:hidden}
+.mnav.open{transform:none;visibility:visible}
+.mnav .top{display:flex;align-items:center;justify-content:space-between}
+.mnav .top .brand{color:#f5f6f8;--mark-b:#f5f6f8}
+.mnav .x{width:46px;height:46px;border-radius:50%;border:1px solid rgba(245,246,248,.25);background:transparent;color:#f5f6f8;font-size:22px;cursor:pointer}
+.mnav nav{display:flex;flex-direction:column;gap:4px;margin-top:34px}
+.mnav nav a{color:#f5f6f8;text-decoration:none;font-size:26px;font-weight:600;padding:10px 0;border-bottom:1px solid rgba(245,246,248,.1)}
+.mnav nav a[aria-current="page"]{color:#2bcf8f}
+.mnav .mcta{margin-top:auto;display:flex;justify-content:center;align-items:center;gap:10px;background:#2bcf8f;color:#0b1b3a;font-weight:700;text-decoration:none;border-radius:999px;padding:16px}
+.mnav .mfoot{margin-top:16px;font-size:14px;color:#a3b0cb;text-align:center}
+@media (prefers-reduced-motion:reduce){.mnav{transition:none}}
+body.menu-open{overflow:hidden}
+
+/* ---------- 3D pages: text always sits above the 3D scene ---------- */
+body.has3d #gl{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;z-index:1!important;pointer-events:none;display:block}
+body.has3d main>section,body.has3d main>div{position:relative}
+body.has3d main section>.wrap,body.has3d main section>.in{position:relative;z-index:2}
+body.has3d footer.cf{position:relative;z-index:3}
+html.no-gl #gl{display:none!important}
+html.no-gl .gl-fallback{display:block!important}
+.gl-fallback{display:none}
+
+/* images and text sit centred against each other */
+.feat,.testi,.ai,.final .grid,.hero .grid{align-items:center}
+
+/* ---------- footer: comfortable tap targets ---------- */
+.cf-bottom .legal a{display:inline-flex;align-items:center;min-height:40px;padding:0 6px}
+.cf ul a{display:inline-block;padding:4px 0}
+.cf .soc a{min-width:40px;min-height:40px}
+
+/* ---------- launch updates form (Our Innovation) ---------- */
+.lu-form{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.lu-form input{flex:1 1 220px;min-width:0;font:inherit;font-size:15px;padding:13px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.08);color:inherit}
+.lu-form input::placeholder{color:rgba(242,238,252,.6)}
+.lu-form button{cursor:pointer;border:0}
+.lu-msg{flex-basis:100%;font-size:14px;margin:4px 0 0;min-height:1em}
+.lu-msg.ok{color:#2bcf8f}.lu-msg.err{color:#ff9b9b}
+.hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;opacity:0}
+.cf a.cc{color:inherit;text-decoration:none}
+.cf a.cc:hover{border-color:#2bcf8f}

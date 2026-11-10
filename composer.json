@@ -11,7 +11,8 @@
         "php": "^8.2",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.9",
-        "resend/resend-php": "^1.18"
+        "resend/resend-php": "^1.18",
+        "mongodb/laravel-mongodb": "^5.7"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

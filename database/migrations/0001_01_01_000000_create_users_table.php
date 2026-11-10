@@ -11,6 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::getConnection()->getDriverName() === 'mongodb') {
+            // MongoDB: admin users only (sessions are stored in files)
+            Schema::create('users', function ($c) {
+                $c->unique('email');
+            });
+            return;
+        }
+
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');

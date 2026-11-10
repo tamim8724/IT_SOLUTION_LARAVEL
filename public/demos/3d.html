@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ember & Stack — 3D concept project by e-Trust</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0b09;--ink:#f6efe6;--muted:#a8998a;--fire:#ff7a1a;--line:rgba(246,239,230,.12)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,sans-serif;background:radial-gradient(120% 80% at 70% 30%,#2a160b,#0e0b09 60%) fixed;color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,.num{font-family:"Bebas Neue",Impact,sans-serif;font-weight:400;letter-spacing:.01em;line-height:.9}
+a{color:inherit;text-decoration:none}
+#gl{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,48px);width:100%}
+.concept{position:relative;z-index:3;background:var(--fire);color:#160b03;font-size:12.5px;text-align:center;padding:7px 12px;font-weight:600}
+nav{position:sticky;top:0;z-index:3;display:flex;align-items:center;gap:26px;height:70px;background:rgba(14,11,9,.7);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;gap:26px}
+.logo{font-family:"Bebas Neue",sans-serif;font-size:30px;letter-spacing:.04em}.logo span{color:var(--fire)}
+nav .links{display:flex;gap:24px;margin-left:auto;font-size:14.5px;font-weight:500;color:#d9cbbd}
+.book{height:42px;padding:0 18px;border-radius:999px;background:var(--fire);color:#160b03;font-weight:700;font-size:14px;display:flex;align-items:center}
+section{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding:80px 0}
+.col{max-width:470px}
+.right .col{margin-left:auto}
+.kick{font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--fire);font-weight:700}
+.hero h1{font-size:clamp(64px,8.6vw,128px);margin:14px 0 18px}
+.hero h1 span{color:var(--fire)}
+.hero p{color:#d9cbbd;font-size:clamp(17px,1.5vw,19px);max-width:34ch}
+.acts{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.b1{height:52px;padding:0 24px;border-radius:999px;background:var(--fire);color:#160b03;font-weight:700;display:inline-flex;align-items:center}
+.b2{height:52px;padding:0 24px;border-radius:999px;border:1.5px solid var(--ink);font-weight:600;display:inline-flex;align-items:center}
+.step .num{font-size:clamp(90px,11vw,150px);color:transparent;-webkit-text-stroke:1.5px var(--fire)}
+.step h2{font-size:clamp(48px,6vw,84px);margin-top:4px}
+.step p{color:#d9cbbd;font-size:17px;margin-top:12px}
+.spec{display:flex;gap:28px;margin-top:22px;border-top:1px solid var(--line);padding-top:18px}
+.spec b{display:block;font-family:"Bebas Neue",sans-serif;font-size:42px;font-weight:400;color:var(--fire);line-height:1}
+.spec span{font-size:12.5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.menu,.res{background:rgba(14,11,9,.88)}
+.menu h2,.res h2{font-size:clamp(56px,7vw,100px)}
+.items{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:30px}
+.item{border:1px solid var(--line);border-radius:20px;padding:22px;background:rgba(246,239,230,.03)}
+.item .t{display:flex;justify-content:space-between;align-items:baseline}
+.item h3{font-family:"Bebas Neue",sans-serif;font-weight:400;font-size:32px;letter-spacing:.02em}
+.item .pr{color:var(--fire);font-weight:700}
+.item p{color:var(--muted);font-size:14.5px;margin-top:6px}
+.res .grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.form{border:1px solid var(--line);border-radius:22px;padding:24px;background:rgba(246,239,230,.04)}
+.form label{display:block;font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:12px 0 6px}
+.form .in{height:48px;border-radius:12px;border:1px solid var(--line);display:flex;align-items:center;padding:0 14px;color:#d9cbbd}
+.times{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.times span{height:42px;border-radius:10px;border:1px solid var(--line);display:grid;place-items:center;font-weight:600;font-size:14px}
+.times span.on{background:var(--fire);color:#160b03;border-color:var(--fire)}
+.form .b1{width:100%;justify-content:center;margin-top:18px;border:0;cursor:pointer;font-size:16px}
+footer{position:relative;z-index:1;padding:30px 0;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
+@media (max-width:860px){
+  nav .links{display:none}nav .book{margin-left:auto}
+  section{min-height:auto;padding:70px 0}
+  .hero{min-height:100svh;align-items:flex-end;padding-bottom:40px}
+  .step{min-height:100svh;align-items:flex-end}
+  .step .col,.hero .col{background:rgba(14,11,9,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:20px;padding:22px}
+  .right .col{margin-left:0}
+  .items,.res .grid{grid-template-columns:1fr}
+}
+</style>
+<script type="importmap">{"imports":{"three":"../js/vendor/three/three.module.min.js","three/addons/":"../js/vendor/three/addons/"}}</script>
+</head>
+<body>
+<div class="concept">3D concept project by e-Trust · Ember &amp; Stack is not a real restaurant</div>
+<nav><div class="wrap"><a class="logo" href="#">Ember<span>&amp;</span>Stack</a><div class="links"><a href="#s1">The burger</a><a href="#menu">Menu</a><a href="#book">Book a table</a></div><a class="book" href="#book">Book a table</a></div></nav>
+<canvas id="gl" aria-hidden="true"></canvas>
+
+<section class="hero" data-s="0"><div class="wrap"><div class="col">
+  <p class="kick">Smash burgers · Gulshan, Dhaka</p>
+  <h1>Built<br>layer by <span>layer.</span></h1>
+  <p>Scroll to see how we build the burger people queue for — one honest layer at a time.</p>
+  <div class="acts"><a class="b1" href="#book">Book a table</a><a class="b2" href="#menu">See the menu</a></div>
+</div></div></section>
+
+<section class="step right" id="s1" data-s="1"><div class="wrap"><div class="col">
+  <div class="num">01</div><h2>The bun</h2>
+  <p>Brioche baked every morning, toasted in beef fat until the edges crunch.</p>
+  <div class="spec"><div><b>06:00</b><span>Baked daily</span></div><div><b>2 min</b><span>Toast time</span></div></div>
+</div></div></section>
+
+<section class="step" data-s="2"><div class="wrap"><div class="col">
+  <div class="num">02</div><h2>The cut</h2>
+  <p>Fresh-ground chuck and brisket, never frozen, pressed by hand to order.</p>
+  <div class="spec"><div><b>180G</b><span>Patty weight</span></div><div><b>80/20</b><span>Lean to fat</span></div></div>
+</div></div></section>
+
+<section class="step right" data-s="3"><div class="wrap"><div class="col">
+  <div class="num">03</div><h2>The sear</h2>
+  <p>Smashed hard on a screaming-hot plate for a deep, caramelised crust.</p>
+  <div class="spec"><div><b>230°C</b><span>Plate temp</span></div><div><b>90 SEC</b><span>Per side</span></div></div>
+</div></div></section>
+
+<section class="step" data-s="4"><div class="wrap"><div class="col">
+  <div class="num">04</div><h2>The melt</h2>
+  <p>Aged cheddar melted under a dome, then crisp lettuce, tomato and red onion.</p>
+  <div class="spec"><div><b>2</b><span>Cheese slices</span></div><div><b>3</b><span>Fresh toppings</span></div></div>
+</div></div></section>
+
+<section class="step right" data-s="5"><div class="wrap"><div class="col">
+  <div class="num">05</div><h2>The stack</h2>
+  <p>Everything comes together in under seven minutes, straight to your table.</p>
+  <div class="spec"><div><b>7 MIN</b><span>Order to table</span></div><div><b>1</b><span>Perfect bite</span></div></div>
+</div></div></section>
+
+<section class="menu" id="menu" data-s="6"><div class="wrap">
+  <p class="kick">The menu</p><h2>Pick your stack.</h2>
+  <div class="items">
+    <div class="item"><div class="t"><h3>The Classic</h3><span class="pr">৳490</span></div><p>Single patty, cheddar, pickles, house sauce.</p></div>
+    <div class="item"><div class="t"><h3>The Double</h3><span class="pr">৳690</span></div><p>Two smashed patties, double cheese, onions.</p></div>
+    <div class="item"><div class="t"><h3>The Smoke</h3><span class="pr">৳750</span></div><p>Smoked bacon, chipotle mayo, crispy onions.</p></div>
+    <div class="item"><div class="t"><h3>Green Stack</h3><span class="pr">৳520</span></div><p>Mushroom &amp; bean patty, avocado, slaw.</p></div>
+    <div class="item"><div class="t"><h3>Beef-fat Fries</h3><span class="pr">৳220</span></div><p>Twice-cooked, sea salt, garlic aioli.</p></div>
+    <div class="item"><div class="t"><h3>Thick Shake</h3><span class="pr">৳280</span></div><p>Vanilla, chocolate or salted caramel.</p></div>
+  </div>
+</div></section>
+
+<section class="res" id="book" data-s="7"><div class="wrap grid">
+  <div><p class="kick">Reservations</p><h2>Save your seat.</h2><p style="color:#d9cbbd;margin-top:12px;max-width:36ch">Gulshan 2, Dhaka · Open every day, 12 pm – 11 pm. Walk-ins welcome, but Fridays fill up fast.</p></div>
+  <form class="form" onsubmit="event.preventDefault();this.querySelector('button').textContent='Demo only — no booking made'">
+    <label>Date</label><div class="in">Friday, 13 November</div>
+    <label>Guests</label><div class="in">2 people</div>
+    <label>Time</label><div class="times"><span>6:00</span><span class="on">7:00</span><span>8:00</span><span>9:00</span></div>
+    <button class="b1">Book now</button>
+  </form>
+</div></section>
+
+<footer><div class="wrap"><span>© 2026 Ember &amp; Stack (concept)</span><span>3D website designed &amp; built by <b>e-trust.online</b></span></div></footer>
+
+<script type="module">
+import * as THREE from 'three';
+const canvas=document.getElementById('gl');
+const R=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+R.setPixelRatio(Math.min(devicePixelRatio,2)); R.outputColorSpace=THREE.SRGBColorSpace; R.toneMapping=THREE.ACESFilmicToneMapping;
+const scene=new THREE.Scene(); const cam=new THREE.PerspectiveCamera(32,1,.1,100); cam.position.set(0,1.2,10); cam.lookAt(0,0,0);
+scene.add(new THREE.HemisphereLight(0xffe6c8,0x1a0d05,1.1));
+const key=new THREE.DirectionalLight(0xffd2a0,2.4); key.position.set(4,6,5); scene.add(key);
+const fire=new THREE.PointLight(0xff6a1a,30,12); fire.position.set(-3,-1.5,2); scene.add(fire);
+const M=(c,r=.6,o={})=>new THREE.MeshStandardMaterial({color:c,roughness:r,...o});
+const root=new THREE.Group(); scene.add(root);
+const layers=[];
+function add(mesh,y,id){const g=new THREE.Group();g.add(mesh);g.userData={y,id};root.add(g);layers.push(g);return g;}
+// bottom bun
+const bb=new THREE.Mesh(new THREE.CylinderGeometry(1.5,1.4,.5,64),M('#c9822f',.55)); add(bb,-1.1,'bun');
+// patty
+const pg=new THREE.CylinderGeometry(1.62,1.62,.42,64,3); const pp=pg.attributes.position;
+for(let i=0;i<pp.count;i++){const x=pp.getX(i),z=pp.getZ(i),y=pp.getY(i);const a=Math.atan2(z,x);const n=1+Math.sin(a*9)*.03+Math.sin(a*23)*.02;pp.setXYZ(i,x*n,y+Math.sin(a*7+x)*.02,z*n);} pg.computeVertexNormals();
+add(new THREE.Mesh(pg,M('#4a2512',.9)),-.62,'patty');
+// cheese (draped square)
+const cg=new THREE.PlaneGeometry(3.3,3.3,30,30); cg.rotateX(-Math.PI/2); const cp=cg.attributes.position;
+for(let i=0;i<cp.count;i++){const x=cp.getX(i),z=cp.getZ(i);const r=Math.hypot(x,z);cp.setY(i,r>1.55?-(r-1.55)*.7:0);} cg.computeVertexNormals();
+add(new THREE.Mesh(cg,M('#ffb21f',.35,{side:THREE.DoubleSide})),-.38,'cheese');
+// lettuce
+const lg=new THREE.CylinderGeometry(1.72,1.72,.08,96,1); const lp=lg.attributes.position;
+for(let i=0;i<lp.count;i++){const x=lp.getX(i),z=lp.getZ(i),y=lp.getY(i);const a=Math.atan2(z,x);const r=Math.hypot(x,z);if(r>1.2){lp.setY(i,y+Math.sin(a*14)*.09);const n=1+Math.sin(a*14)*.04;lp.setX(i,x*n);lp.setZ(i,z*n);}} lg.computeVertexNormals();
+add(new THREE.Mesh(lg,M('#5fae3a',.5)),-.18,'lettuce');
+// tomato
+const tg=new THREE.Group(); [[-.6,0],[.62,.1]].forEach(([x,z])=>{const t=new THREE.Mesh(new THREE.CylinderGeometry(.82,.82,.14,48),M('#d8332a',.35));t.position.set(x,0,z);tg.add(t);const c=new THREE.Mesh(new THREE.CylinderGeometry(.5,.5,.15,32),M('#ff6a52',.4));c.position.set(x,.005,z);tg.add(c);});
+add(tg,0,'tomato');
+// onion rings
+const og=new THREE.Group(); [[-.5,.3],[.4,-.4],[.2,.5]].forEach(([x,z])=>{const o=new THREE.Mesh(new THREE.TorusGeometry(.42,.06,10,40),M('#b07ab8',.4));o.rotation.x=Math.PI/2;o.position.set(x,0,z);og.add(o);});
+add(og,.14,'onion');
+// top bun
+const tb=new THREE.Mesh(new THREE.SphereGeometry(1.55,64,32,0,Math.PI*2,0,Math.PI/2),M('#d48a34',.45)); tb.scale.y=.78;
+const top=add(tb,.24,'top');
+const seed=new THREE.SphereGeometry(.06,10,8); seed.scale(1,.45,.6);
+for(let i=0;i<60;i++){const u=Math.random()*Math.PI*2,v=Math.random()*1.25;const s=new THREE.Mesh(seed,M('#f5e6c4',.5));const r=1.56;const x=Math.sin(v)*Math.cos(u)*r,z=Math.sin(v)*Math.sin(u)*r,y=Math.cos(v)*r*.78;s.position.set(x,y,z);s.lookAt(x*2,y*2,z*2);tb.add(s);}
+// plate glow
+const glow=new THREE.Mesh(new THREE.CircleGeometry(2.6,64),new THREE.MeshBasicMaterial({color:0xff7a1a,transparent:true,opacity:.12}));glow.rotation.x=-Math.PI/2;glow.position.y=-1.45;root.add(glow);
+
+const FOCUS={1:['bun','top'],2:['patty'],3:['patty'],4:['cheese','lettuce','tomato','onion'],5:[]};
+// per section: [x, explode, rotX, scale]
+const P={0:[2.9,0,.35,.78],1:[-3.1,1,.25,.66],2:[3.1,1,.3,.66],3:[-3.1,1,.45,.66],4:[3.1,1,.25,.66],5:[-3.0,0,.3,.8],6:[3.2,0,.35,.0],7:[3.2,0,.35,.0]};
+const secs=[...document.querySelectorAll('[data-s]')];
+let cur=P[0].slice(), curS=0, mobile=false;
+function size(){const w=innerWidth,h=innerHeight;R.setSize(w,h,false);cam.aspect=w/h;cam.updateProjectionMatrix();mobile=w<860;}
+addEventListener('resize',size);size();
+const shot=window.__shot, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function active(){const c=innerHeight*.5;for(const s of secs){const r=s.getBoundingClientRect();if(r.top<=c&&r.bottom>=c)return +s.dataset.s;}return 0;}
+let last=performance.now();
+function frame(now){requestAnimationFrame(frame);const dt=Math.min((now-last)/1000,.05);last=now;
+  const s=active(); curS=s; const t=P[s]; const k=(reduce||shot)?1:1-Math.exp(-dt*4);
+  const tgt=[mobile?0:t[0],t[1],t[2],t[3]]; for(let i=0;i<4;i++)cur[i]+=(tgt[i]-cur[i])*k;
+  root.position.set(cur[0],mobile?1.25:-.15,0); const sc=cur[3]*(mobile?.7:1); root.scale.setScalar(Math.max(sc,.0001));
+  root.rotation.x=cur[2]; root.rotation.y+= (reduce||shot)?0:dt*.35;
+  const f=FOCUS[s]||[];
+  layers.forEach((g,i)=>{const ty=g.userData.y+cur[1]*(i-3)*.42; g.position.y+=(ty-g.position.y)*((reduce||shot)?1:k);
+    const on=!f.length||f.includes(g.userData.id); const ts=on?1:.92; g.scale.setScalar(g.scale.x+(ts-g.scale.x)*((reduce||shot)?1:k));
+    g.traverse(o=>{if(o.material){o.material.transparent=true;const op=on?1:.35;o.material.opacity+=(op-o.material.opacity)*((reduce||shot)?1:k);}});});
+  if(s===3){fire.intensity=60+Math.sin(now*.01)*15;}else fire.intensity=30;
+  R.render(scene,cam);}
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

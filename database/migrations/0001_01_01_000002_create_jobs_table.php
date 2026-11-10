@@ -11,6 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (Schema::getConnection()->getDriverName() === 'mongodb') {
+            // MongoDB: jobs run straight away (QUEUE_CONNECTION=sync), nothing to create
+            return;
+        }
+
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
             $table->string('queue')->index();

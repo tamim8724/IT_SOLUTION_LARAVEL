@@ -12,7 +12,7 @@ Artisan::command('ai:test', function () {
     $this->line('PHP ' . PHP_VERSION . ' | curl: ' . (extension_loaded('curl') ? 'yes' : 'NO') . ' | openssl: ' . (extension_loaded('openssl') ? 'yes' : 'NO'));
     $results = app(\App\Services\AiAssistant::class)->diagnose();
     if (! $results) {
-        $this->warn('No AI provider key found. Add e.g. GROQ_API_KEY=gsk_... to .env, then run: php artisan config:clear');
+        $this->warn('No AI provider key found. Add e.g. GEMINI_API_KEY=... or GROQ_API_KEY=gsk_... to .env, then run: php artisan config:clear');
         return;
     }
     foreach ($results as $key => $r) {
@@ -28,7 +28,7 @@ Artisan::command('ai:test', function () {
             $this->warn('  Fix: your computer cannot reach this AI (internet, firewall, VPN or antivirus). Test in a browser: https://api.groq.com');
         }
         if ($r['ok'] && $r['seconds'] > 6) {
-            $this->warn('  Slow. For faster replies try a smaller model, e.g. GROQ_MODEL=llama-3.1-8b-instant');
+            $this->warn('  Slow. For faster replies try a smaller model, e.g. GROQ_MODEL=openai/gpt-oss-20b');
         }
         if (! $r['ok'] && str_contains($r['detail'], 'HTTP 429')) {
             $this->warn('  The free limit for this provider is used up for now. Wait a minute (or until tomorrow).');

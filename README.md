@@ -1,66 +1,107 @@
-# e-Trust website: Your expert IT solution
+# e-Trust website (e-trust.online)
 
-The official website of **e-Trust** (https://www.e-trust.online), an IT solutions company in Moghbazar, Dhaka, serving Bangladesh and Sydney.
-Laravel 12, hand-written, no template. Every page is a scroll-driven 3D page (Three.js) with its own colour theme and its own 3D scene.
+Company website of **e-Trust IT Solutions** (Moghbazar, Dhaka · serving Bangladesh and Sydney).
+Laravel 12, hand-written, Three.js 3D, Poppins font (self-hosted), database: **MongoDB**.
 
 ## Pages
 
-| URL | Theme | 3D scene |
+| URL | Colour | Notes |
 | --- | --- | --- |
-| `/` | Studio grey | 3D e-Trust "Et" logo that turns, changes colour and zooms as you scroll |
-| `/about` | Night navy | Globe with a light arc from Dhaka to Sydney |
-| `/services` | Mint | Ring of 7 service objects (browser, phone, shield, AI chip, pen, chart, cloud) |
-| `/projects` | Graphite | Laptop that opens and shows each project on its screen |
-| `/dorkari` | Deep purple | Ring of the 8 DORKARI product tiles (Bangla + English names) |
-| `/team` | Warm sand | Ring of team photos connected by lines |
-| `/assistant` | Rose | AI orb with chat bubbles, plus the full-screen free AI chat |
-| `/contact` | Black + green | Paper plane flying around a Dhaka location pin, working contact form |
+| `/` | Light | 3D logo tour, Our Innovation (Soon), launch-updates form |
+| `/about` | Light | Globe Dhaka → Sydney |
+| `/services` | Navy | 7 services (incl. Cyber security), "Get a quote" opens Contact with the service picked |
+| `/projects` | Navy | Laptop scene, case study, demos in `public/demos` |
+| `/team` | Navy | Team + HR "Send your CV" |
+| `/assistant` | Navy | Free AI chat (also a floating chat button on every page) |
+| `/contact` | Navy | Contact form |
+| `/audit` | Light | Free website audit form |
+| `/privacy`, `/terms` | Light | PDFs in `public/docs` |
 
-A floating "Ask e-Trust AI" chat button is on every page (except `/assistant`).
-Old Bootstrap pages are kept (not routed) in `resources/views/pages`.
+Old URLs redirect: `/dorkari` and `/innovation` → `/#innovation`, `/privacy-policy` → `/privacy`, `/terms-of-service` → `/terms`.
+`www.e-trust.online` → `https://e-trust.online` (production only, `app/Http/Middleware/CanonicalHost.php`).
 
-## Edit the content
+## Where things are
 
-Almost all text lives in **`config/etrust.php`**: contact details, mission, vision, values, services, process, DORKARI products, projects, team, FAQ and AI settings.
+- Pages: `resources/views/site/*.blade.php`, layout `resources/views/layouts/site.blade.php`
+- Nav and footer: `resources/views/site/partials/`
+- Styles: `public/css/site.css` (shared) and `public/css/pages/*.css`
+- 3D: `public/js/three-site.js` (each page's 3D poses are in `window.SCENE` inside its view)
+- AI chat: `public/js/chat.js`, `app/Services/AiAssistant.php`, `app/Http/Controllers/ChatController.php`
+- Leads (email code): `app/Http/Controllers/LeadController.php`
+- Forms: `ContactController`, `AuditController`, `LaunchUpdatesController`
+- Contact details, services, team, AI providers: `config/etrust.php`
+- Admin: `/admin` (all enquiries, filters, CSV download)
 
-- Pages: `resources/views/pages3d/*.blade.php` (each page's 3D poses are at the top of its file)
-- Shared layout, navbar, footer, chat: `resources/views/layouts/three.blade.php`, `resources/views/partials3d/`
-- Styles and page themes: `public/css/three-site.css`
-- 3D engine (all scenes): `public/js/three-site.js` (three.js is self-hosted in `public/js/vendor/three`)
-- AI chat: `public/js/chat.js`, `app/Http/Controllers/ChatController.php`, `app/Services/AiAssistant.php`
-- Team photos and images: `public/img/`
+## Database: MongoDB
+
+1. Make a free cluster on MongoDB Atlas (https://www.mongodb.com/atlas) and a database user.
+2. Atlas → **Network Access** → allow `0.0.0.0/0` (Render free plan has no fixed IP).
+3. Atlas → **Connect → Drivers** → copy the connection string.
+
+The `Dockerfile` installs the PHP MongoDB extension and the `mongodb/laravel-mongodb` package.
+Tables/collections and indexes are made by `php artisan migrate`, which runs on every start.
+
+Quick local test without MongoDB: set `DB_CONNECTION=sqlite` (the code works with both).
+
+## Run on your PC (Windows, VS Code terminal)
+
+```
+composer install
+composer update mongodb/laravel-mongodb --with-dependencies --ignore-platform-req=ext-mongodb
+copy .env.example .env
+php artisan key:generate
+```
+
+In `.env` set: `APP_ENV=local`, `APP_DEBUG=true`, `APP_URL=http://127.0.0.1:8000`, `DB_CONNECTION=sqlite`, `MAIL_MAILER=log`.
+(For MongoDB instead: install the PHP `mongodb` extension, then `DB_CONNECTION=mongodb` + `MONGODB_URI` + `MONGODB_DATABASE=etrust_test`.)
+
+```
+New-Item database\database.sqlite -ItemType File
+php artisan config:clear
+php artisan migrate --force
+php artisan etrust:admin info@e-trust.online
+php -S 127.0.0.1:8000 -t public
+```
+
+Open http://127.0.0.1:8000 (admin: http://127.0.0.1:8000/admin). Keep that terminal open.
+Emails and the AI chat's email codes go to `storage\logs\laravel.log` while `MAIL_MAILER=log`.
 
 ## Deploy on Render (Docker)
 
-Push to GitHub; Render builds the `Dockerfile`. In **Render > Environment** set:
+Push to GitHub; Render builds the `Dockerfile`. In **Render → Environment** set:
 
 | Key | Value |
 | --- | --- |
 | `APP_KEY` | your existing key |
 | `APP_ENV` / `APP_DEBUG` | `production` / `false` |
-| `APP_URL` | `https://www.e-trust.online` |
-| `LOG_CHANNEL` | `stderr` (errors and contact messages show in Render > Logs) |
-| `AI_API_KEY` | free Groq key from https://console.groq.com/keys (optional; without it the chat uses built-in answers) |
-| `MAIL_MAILER` + `RESEND_KEY` | `resend` + your key (Render's free plan blocks SMTP; Resend works over HTTPS) |
+| `APP_URL` | `https://e-trust.online` |
+| `DB_CONNECTION` | `mongodb` |
+| `MONGODB_URI` | your Atlas connection string |
+| `MONGODB_DATABASE` | `etrust` |
+| `MAIL_MAILER` + `RESEND_KEY` | `resend` + your key (Render free plan blocks SMTP) |
 | `MAIL_FROM_ADDRESS` / `CONTACT_TO_ADDRESS` | `info@e-trust.online` |
+| AI keys | see below |
 
-Contact messages are (1) logged, (2) saved to `storage/app/private/contact-messages.jsonl`, and (3) emailed once mail is configured.
+After the first deploy, open **Render → Shell** and make the admin login:
 
-## Run locally
-
-```bash
-php artisan serve
+```
+php artisan etrust:admin info@e-trust.online
 ```
 
-Open http://127.0.0.1:8000. For local use set `APP_ENV=local` in `.env` (production forces https).
-`bootstrap/polyfills.php` adds `mb_split()` for lightweight PHP builds (php.new / Herd Lite).
+(It asks for a password, at least 10 characters.)
 
-## AI troubleshooting
+## AI keys
 
-Run `php artisan ai:test`. It tries every AI key you set and prints OK or the exact error.
+In `.env.example` every AI key says `API key here`. Replace it with a real key on Render.
+A key left as `API key here` is ignored. Free providers are tried first; if one is busy, the next answers.
+With no keys at all, the chat gives a short built-in answer with our contact details.
 
-- `HTTP 401` / invalid key: copy the key again (no spaces or quotes), then `php artisan config:clear`.
-- `HTTP 429`: free limit used up; wait, or add a second provider (e.g. GEMINI_API_KEY).
-- `cURL error 60` (common on Windows): PHP cannot verify SSL. Download https://curl.se/ca/cacert.pem, then in the php.ini shown by `php --ini` add:
-  `curl.cainfo="C:\path\to\cacert.pem"` and `openssl.cafile="C:\path\to\cacert.pem"`, then restart `php artisan serve`.
-- curl: NO: enable `extension=curl` in php.ini.
+## Domain
+
+In Render → Settings → Custom Domains add `e-trust.online` and `www.e-trust.online`, then point DNS as Render shows.
+Sitemap: `https://e-trust.online/sitemap.xml` (submit it in Google Search Console).
+
+## Before going live
+
+- Saad Habib's quote on Home/Projects: get his OK.
+- Privacy Policy and Terms: have a lawyer review them.

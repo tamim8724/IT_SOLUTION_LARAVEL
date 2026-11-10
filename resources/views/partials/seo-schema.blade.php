@@ -10,8 +10,8 @@
             'alternateName' => 'e-trust.online',
             'url' => url('/'),
             'logo' => asset('img/logo-mark.png'),
-            'image' => asset('img/carousel-1.jpg'),
-            'description' => 'Web design and development company in Dhaka, Bangladesh, serving clients in Bangladesh and Sydney, Australia. Web design, web development, UI/UX, web security, SEO and digital marketing.',
+            'image' => asset('img/share.jpg'),
+            'description' => 'Web design and development company in Dhaka, Bangladesh, serving clients in Bangladesh and Sydney, Australia. Websites, web and mobile apps, cyber security, AI chat assistants, UI/UX, SEO and hosting.',
             'email' => config('etrust.email'),
             'telephone' => config('etrust.phone_tel'),
             'priceRange' => '$$',
@@ -33,7 +33,15 @@
                 ['@type' => 'Person', 'name' => 'Md Muktadir Anik', 'url' => 'https://mdportfolio.e-trust.online/'],
                 ['@type' => 'Person', 'name' => 'Tamim Ahmed'],
             ],
-            'knowsAbout' => ['Web Design', 'Web Development', 'UI/UX Design', 'Web Security', 'Search Engine Optimization', 'Digital Marketing', 'Laravel', 'PHP'],
+            'knowsAbout' => ['Web Design', 'Web Development', 'Mobile Apps', 'Cyber Security', 'AI Chat Assistants', 'UI/UX Design', 'Search Engine Optimization', 'Digital Marketing', 'Web Hosting', 'Laravel', 'PHP'],
+            'hasOfferCatalog' => [
+                '@type' => 'OfferCatalog',
+                'name' => 'Services',
+                'itemListElement' => collect(config('etrust.services', []))->map(fn ($s) => [
+                    '@type' => 'Offer',
+                    'itemOffered' => ['@type' => 'Service', 'name' => $s['title'], 'url' => url('/services') . '#' . $s['slug']],
+                ])->values()->all(),
+            ],
             'sameAs' => [config('etrust.facebook')],
         ],
         [

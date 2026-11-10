@@ -1,11 +1,17 @@
 <?php
 
+// A key left as the placeholder "API key here" counts as not set.
+$aiKey = static function (string $name): string {
+    $v = trim((string) env($name, ''));
+    return strcasecmp($v, 'API key here') === 0 ? '' : $v;
+};
+
 /*
 |--------------------------------------------------------------------------
 | e-Trust website content
 |--------------------------------------------------------------------------
 | Almost every piece of text on the website lives here: contact details,
-| mission, vision, values, services, DORKARI products, projects, team, FAQ
+| mission, vision, values, services, projects, team, FAQ
 | and AI settings. Change it here and every page updates.
 | On the server, run: php artisan config:clear
 */
@@ -16,6 +22,9 @@ return [
     'domain'  => 'e-trust.online',
     'motto'   => 'Your expert IT solution',
     'tagline' => 'Custom websites, software, security and AI, built in Dhaka for businesses in Bangladesh and Sydney.',
+
+    // Bump to refresh cached CSS/JS after a deploy
+    'asset_version' => env('ASSET_VERSION', '2026-11-10'),
 
     // Flat keys used across the views
     'email'     => 'info@e-trust.online',
@@ -32,6 +41,9 @@ return [
         'phone_raw' => '+8801960013601',
         // Number for the WhatsApp button (country code, no +). Set to null to hide it.
         'whatsapp'  => '8801960013601',
+        // Sydney: WhatsApp messages only, 7 days, 10am-4pm Sydney time
+        'sydney_whatsapp' => '+61 422 757 090',
+        'sydney_hours'    => '7 days, 10am-4pm (Sydney time), WhatsApp messages only',
         'hours'     => 'Saturday to Thursday, 10am to 7pm (GMT+6)',
     ],
 
@@ -71,11 +83,11 @@ return [
          'short' => 'Interfaces people understand at first glance.',
          'text' => 'User research, wireframes and polished interface design for websites and apps, plus logos and brand kits that look consistent everywhere.',
          'points' => ['UX research and wireframes', 'Interface and prototype design', 'Logo and brand identity', 'Design systems']],
-        ['slug' => 'growth', 'shape' => 'chart', 'title' => 'Digital marketing & SEO',
+        ['slug' => 'seo', 'shape' => 'chart', 'title' => 'Digital marketing & SEO',
          'short' => 'Get found by the right customers, in Dhaka and Sydney.',
          'text' => 'Search engine optimisation, Google Business Profile, social media campaigns and analytics so you know exactly which marketing brings in sales.',
          'points' => ['Technical and local SEO', 'Facebook and Google ads', 'Content and social media', 'Analytics and reporting']],
-        ['slug' => 'cloud', 'shape' => 'cloud', 'title' => 'Hosting, cloud & maintenance',
+        ['slug' => 'hosting', 'shape' => 'cloud', 'title' => 'Hosting, cloud & maintenance',
          'short' => 'We keep your systems online, updated and backed up.',
          'text' => 'Domain, hosting, Docker and cloud deployment, plus monthly care plans with updates, uptime monitoring and quick support when something goes wrong.',
          'points' => ['Domain, hosting and email setup', 'Docker and cloud deployment', 'Updates and uptime monitoring', 'Priority support plans']],
@@ -88,38 +100,8 @@ return [
         ['title' => 'Launch & care', 'text' => 'We test, secure and launch, then stay with you for updates, support and growth.'],
     ],
 
-    'dorkari' => [
-        'url'      => 'https://dorkari.e-trust.online/',
-        'name'     => 'DORKARI',
-        'name_bn'  => 'দরকারি',
-        'tagline'  => 'Everyday tools. One DORKARI.',
-        'text'     => 'Our own product: one account for the tools that small businesses and families in Bangladesh need every day. Ledgers, tailoring, websites, online shops, local services, rent, documents and personal budgets, with an AI helper built in.',
-        'status'   => 'Launching soon',
-        'products' => [
-            ['name' => 'Khata',     'bn' => 'খাতা',       'color' => '#FFB547', 'text' => 'Digital ledger for sales, purchases, customer dues and reports.'],
-            ['name' => 'Dorji',     'bn' => 'দর্জি',       'color' => '#FF7A59', 'text' => 'Tailoring management for measurements, orders, payments and delivery dates.'],
-            ['name' => 'WebShilpo', 'bn' => 'ওয়েবশিল্প',   'color' => '#5BC0EB', 'text' => 'Website builder with admin panel and hosting. No coding needed.'],
-            ['name' => 'Bikikini',  'bn' => 'বিকিকিনি',    'color' => '#00C389', 'text' => 'Online store with orders, payments and sales tracking.'],
-            ['name' => 'Karigor',   'bn' => 'কারিগর',     'color' => '#B794F6', 'text' => 'Find and book trusted local service providers.'],
-            ['name' => 'BariKhata', 'bn' => 'বাড়িখাতা',    'color' => '#F6C343', 'text' => 'Property and rent management for tenants, bills and maintenance.'],
-            ['name' => 'Nothi',     'bn' => 'নথি',        'color' => '#7DD3FC', 'text' => 'Document and PDF tools, CV builder and ready templates.'],
-            ['name' => 'TakaHisab', 'bn' => 'টাকা হিসাব',  'color' => '#F472B6', 'text' => 'Personal budget, savings goals and recurring bills.'],
-        ],
-        'audience' => [
-            ['title' => 'Shop owners',              'text' => 'Track sales, dues and stock with Khata, and sell online with Bikikini.'],
-            ['title' => 'Tailors',                  'text' => 'Save every customer\'s measurements, orders and delivery dates in Dorji.'],
-            ['title' => 'Landlords',                'text' => 'Manage tenants, rent and bills from your phone with BariKhata.'],
-            ['title' => 'Families',                 'text' => 'Plan the monthly budget and savings with TakaHisab.'],
-            ['title' => 'Service providers',        'text' => 'Get found and booked by local customers on Karigor.'],
-            ['title' => 'Anyone who needs a website', 'text' => 'Launch a site without code using WebShilpo, then grow with our team.'],
-        ],
-    ],
-
     // Shown on the Projects page; each one appears on the 3D laptop screen.
     'projects' => [
-        ['title' => 'DORKARI', 'type' => 'Our own SaaS product', 'url' => 'https://dorkari.e-trust.online/', 'accent' => '#FFB547',
-         'text' => 'A bilingual all-in-one platform with eight everyday tools for small businesses and families in Bangladesh.',
-         'tags' => ['Product design', 'Web app', 'AI']],
         ['title' => 'Security & Cabling', 'type' => 'Client website, Sydney', 'url' => 'https://securityandcabling.com.au/', 'accent' => '#5BC0EB',
          'text' => 'Full redesign and ongoing development for a Sydney security and cabling installation company, with quote forms and service-area landing pages.',
          'tags' => ['Redesign', 'Web development', 'Local SEO']],
@@ -135,16 +117,16 @@ return [
     ],
 
     'team' => [
-        ['name' => 'Md Muktadir Anik', 'role' => 'Managing Director & Founder', 'img' => 'team-1.jpg', 'profile' => 'https://mdportfolio.e-trust.online/',
+        ['name' => 'Md Muktadir Anik', 'role' => 'Managing Director & Founder', 'img' => 'team-1.webp', 'profile' => 'https://mdportfolio.e-trust.online/',
          'bio' => 'Leads strategy and engineering. Full stack developer with 3+ years building websites and business software in PHP, Laravel, JavaScript, Python and .NET, now studying a Master of IT (Cyber Security) in Australia.',
          'social' => ['facebook' => 'https://www.facebook.com/normalone98', 'instagram' => 'https://www.instagram.com/i_am_anik_1', 'linkedin' => 'https://www.linkedin.com/in/md-muktadir-anik-432390214']],
-        ['name' => 'Tamim Ahmed', 'role' => 'CEO & Co-Founder', 'img' => 'team-2.jpg', 'profile' => null,
+        ['name' => 'Tamim Ahmed', 'role' => 'CEO & Co-Founder', 'img' => 'team-2.webp', 'profile' => null,
          'bio' => 'Runs operations and client partnerships, and keeps every project on time.',
          'social' => ['facebook' => 'https://www.facebook.com/tamim.ahmed.593671']],
-        ['name' => 'Md Abdul Alim', 'role' => 'HR Administrator', 'img' => 'team-3.jpg', 'profile' => null,
+        ['name' => 'Md Abdul Alim', 'role' => 'HR Administrator', 'img' => 'team-3.webp', 'profile' => null,
          'bio' => 'Looks after our people, hiring and the day-to-day running of the office.',
          'social' => ['facebook' => 'https://www.facebook.com/md.abdul.alim.783523']],
-        ['name' => 'Zubayer Farazi', 'role' => 'IT Team Lead', 'img' => 'team-zubayer.jpg', 'profile' => null,
+        ['name' => 'Zubayer Farazi', 'role' => 'IT Team Lead', 'img' => 'team-zubayer.webp', 'profile' => null,
          'bio' => 'Guides the IT and delivery team and makes sure every launch meets our quality bar.',
          'social' => ['facebook' => 'https://www.facebook.com/zubayerfarazi']],
     ],
@@ -165,66 +147,106 @@ return [
     | AI assistant: many AI providers
     |--------------------------------------------------------------------------
     | Add an API key for any provider in Render > Environment and it switches on
-    | automatically (keys stay on the server, never in the browser). Visitors can
-    | pick which AI answers; "Auto" tries them in AI_ORDER and falls back to the
-    | next one if a provider fails. With no keys, built-in answers still work.
+    | automatically (keys stay on the server, never in the browser). The site tries
+    | them in AI_ORDER and falls back to the next one if a provider fails or runs out
+    | of free quota. Visitors see one assistant. With no keys, built-in answers work.
     |
     | Cheapest way to get almost every AI with ONE key: OPENROUTER_API_KEY
     | (Claude, GPT, Gemini, Hermes, Llama, DeepSeek and hundreds more).
     | Free tiers: GROQ_API_KEY (console.groq.com), GEMINI_API_KEY (aistudio.google.com).
     | Model names change often: override any of them with the *_MODEL variables.
     */
+    // AI chat leads: check that the email's domain can receive mail (turn off only for local testing)
+    'lead_email_dns' => (bool) env('LEAD_EMAIL_DNS_CHECK', true),
+
     'ai' => [
-        'order'        => env('AI_ORDER', 'groq,gemini,openrouter,claude,chatgpt,hermes,deepseek,mistral,grok,custom'),
-        'max_attempts' => (int) env('AI_MAX_ATTEMPTS', 2),
-        'max_tokens'   => (int) env('AI_MAX_TOKENS', 700),
-        'timeout'      => (int) env('AI_TIMEOUT', 20),
+        // Free providers first. Add a key in Render > Environment and that provider switches on.
+        // If one is busy or out of free quota, the next one answers; the visitor never sees which.
+        'order'        => env('AI_ORDER', 'gemini,groq,cerebras,mistral,openrouter,cloudflare,nvidia,hetzner,cohere,sambanova,claude,chatgpt,deepseek,grok,custom'),
+        'max_attempts' => (int) env('AI_MAX_ATTEMPTS', 5),
+        'max_tokens'   => (int) env('AI_MAX_TOKENS', 800),
+        'timeout'      => (int) env('AI_TIMEOUT', 15),
+        // A provider that hits its limit (HTTP 429/402) is skipped for this many seconds
+        'cooldown'     => (int) env('AI_COOLDOWN', 300),
         // Fair-use limits per visitor (IP address) and for the whole site per day
         'per_minute'     => (int) env('AI_LIMIT_PER_MINUTE', 8),
         'per_day'        => (int) env('AI_LIMIT_PER_DAY', 150),
         'global_per_day' => (int) env('AI_LIMIT_GLOBAL_PER_DAY', 2500),
 
         'providers' => [
-            'groq' => ['label' => 'Llama (Groq)', 'type' => 'openai',
-                'base_url' => 'https://api.groq.com/openai/v1',
-                'api_key' => env('GROQ_API_KEY', env('AI_API_KEY', '')), // AI_API_KEY kept for older setups
-                'model' => env('GROQ_MODEL', env('AI_MODEL', 'llama-3.3-70b-versatile'))],
-            'gemini' => ['label' => 'Gemini (Google)', 'type' => 'openai',
+            // ---- Free, no card needed ----
+            // aistudio.google.com/apikey
+            'gemini' => ['label' => 'Gemini (Google)', 'type' => 'openai', 'free' => true,
                 'base_url' => 'https://generativelanguage.googleapis.com/v1beta/openai',
-                'api_key' => env('GEMINI_API_KEY', ''),
+                'api_key' => $aiKey('GEMINI_API_KEY'),
                 'model' => env('GEMINI_MODEL', 'gemini-flash-latest')],
-            'openrouter' => ['label' => 'OpenRouter (any model)', 'type' => 'openai',
+            // console.groq.com/keys
+            'groq' => ['label' => 'Groq', 'type' => 'openai', 'free' => true,
+                'base_url' => 'https://api.groq.com/openai/v1',
+                'api_key' => $aiKey('GROQ_API_KEY') ?: $aiKey('AI_API_KEY'),
+                'model' => env('GROQ_MODEL', 'openai/gpt-oss-120b')],
+            // cloud.cerebras.ai (now a trial: needs a card, $5 credit for 30 days)
+            'cerebras' => ['label' => 'Cerebras', 'type' => 'openai', 'free' => false,
+                'base_url' => 'https://api.cerebras.ai/v1',
+                'api_key' => $aiKey('CEREBRAS_API_KEY'),
+                'model' => env('CEREBRAS_MODEL', 'gpt-oss-120b')],
+            // console.mistral.ai (Experiment / free plan)
+            'mistral' => ['label' => 'Mistral', 'type' => 'openai', 'free' => true,
+                'base_url' => 'https://api.mistral.ai/v1',
+                'api_key' => $aiKey('MISTRAL_API_KEY'),
+                'model' => env('MISTRAL_MODEL', 'mistral-small-latest')],
+            // openrouter.ai/keys - ":free" models, about 50 requests a day
+            'openrouter' => ['label' => 'OpenRouter', 'type' => 'openai', 'free' => true,
                 'base_url' => 'https://openrouter.ai/api/v1',
-                'api_key' => env('OPENROUTER_API_KEY', ''),
-                'model' => env('OPENROUTER_MODEL', 'openrouter/auto')],
+                'api_key' => $aiKey('OPENROUTER_API_KEY'),
+                'model' => env('OPENROUTER_MODEL', 'openrouter/free')],
+            // dash.cloudflare.com > AI > Workers AI (needs your account ID too)
+            'cloudflare' => ['label' => 'Cloudflare Workers AI', 'type' => 'openai', 'free' => true,
+                'base_url' => $aiKey('CLOUDFLARE_ACCOUNT_ID') ? 'https://api.cloudflare.com/client/v4/accounts/' . $aiKey('CLOUDFLARE_ACCOUNT_ID') . '/ai/v1' : '',
+                'api_key' => $aiKey('CLOUDFLARE_API_TOKEN'),
+                'model' => env('CLOUDFLARE_MODEL', '@cf/meta/llama-3.3-70b-instruct-fp8-fast')],
+            // build.nvidia.com (free for prototyping)
+            'nvidia' => ['label' => 'NVIDIA', 'type' => 'openai', 'free' => true,
+                'base_url' => 'https://integrate.api.nvidia.com/v1',
+                'api_key' => $aiKey('NVIDIA_API_KEY'),
+                'model' => env('NVIDIA_MODEL', 'meta/llama-3.3-70b-instruct')],
+            // Hetzner Inference API (experimental, free account)
+            'hetzner' => ['label' => 'Hetzner', 'type' => 'openai', 'free' => true,
+                'base_url' => 'https://inference.hetzner.com/api/v1',
+                'api_key' => $aiKey('HETZNER_API_KEY'),
+                'model' => env('HETZNER_MODEL', 'Qwen/Qwen3.6-35B-A3B-FP8')],
+            // dashboard.cohere.com (trial key: 1,000 calls a month, not for commercial use)
+            'cohere' => ['label' => 'Cohere', 'type' => 'openai', 'free' => true,
+                'base_url' => 'https://api.cohere.ai/compatibility/v1',
+                'api_key' => $aiKey('COHERE_API_KEY'),
+                'model' => env('COHERE_MODEL', 'command-a-plus-05-2026')],
+            // cloud.sambanova.ai (very small free limit)
+            'sambanova' => ['label' => 'SambaNova', 'type' => 'openai', 'free' => true,
+                'base_url' => 'https://api.sambanova.ai/v1',
+                'api_key' => $aiKey('SAMBANOVA_API_KEY'),
+                'model' => env('SAMBANOVA_MODEL', 'Meta-Llama-3.3-70B-Instruct')],
+
+            // ---- Paid (optional; only used if you add a key) ----
             'claude' => ['label' => 'Claude (Anthropic)', 'type' => 'anthropic',
                 'base_url' => env('ANTHROPIC_BASE_URL', 'https://api.anthropic.com/v1'),
-                'api_key' => env('ANTHROPIC_API_KEY', ''),
+                'api_key' => $aiKey('ANTHROPIC_API_KEY'),
                 'model' => env('ANTHROPIC_MODEL', 'claude-haiku-5-5')],
             'chatgpt' => ['label' => 'ChatGPT (OpenAI)', 'type' => 'openai',
                 'base_url' => 'https://api.openai.com/v1',
-                'api_key' => env('OPENAI_API_KEY', ''),
+                'api_key' => $aiKey('OPENAI_API_KEY'),
                 'model' => env('OPENAI_MODEL', 'gpt-5.4-mini')],
-            'hermes' => ['label' => 'Hermes (Nous Research)', 'type' => 'openai',
-                'base_url' => env('NOUS_BASE_URL', 'https://inference-api.nousresearch.com/v1'),
-                'api_key' => env('NOUS_API_KEY', ''),
-                'model' => env('NOUS_MODEL', 'Hermes-4-70B')],
             'deepseek' => ['label' => 'DeepSeek', 'type' => 'openai',
                 'base_url' => 'https://api.deepseek.com/v1',
-                'api_key' => env('DEEPSEEK_API_KEY', ''),
-                'model' => env('DEEPSEEK_MODEL', 'deepseek-chat')],
-            'mistral' => ['label' => 'Mistral', 'type' => 'openai',
-                'base_url' => 'https://api.mistral.ai/v1',
-                'api_key' => env('MISTRAL_API_KEY', ''),
-                'model' => env('MISTRAL_MODEL', 'mistral-small-latest')],
+                'api_key' => $aiKey('DEEPSEEK_API_KEY'),
+                'model' => env('DEEPSEEK_MODEL', 'deepseek-flash')],
             'grok' => ['label' => 'Grok (xAI)', 'type' => 'openai',
                 'base_url' => 'https://api.x.ai/v1',
-                'api_key' => env('XAI_API_KEY', ''),
-                'model' => env('XAI_MODEL', '')], // set XAI_MODEL to a current Grok model name
-            // Any other OpenAI-compatible API (Together, Fireworks, Cerebras, Perplexity, a local server...)
+                'api_key' => $aiKey('XAI_API_KEY'),
+                'model' => env('XAI_MODEL', '')],
+            // Any other OpenAI-compatible API
             'custom' => ['label' => env('CUSTOM_AI_LABEL', 'Custom AI'), 'type' => 'openai',
                 'base_url' => env('CUSTOM_AI_BASE_URL', ''),
-                'api_key' => env('CUSTOM_AI_API_KEY', ''),
+                'api_key' => $aiKey('CUSTOM_AI_API_KEY'),
                 'model' => env('CUSTOM_AI_MODEL', '')],
         ],
     ],

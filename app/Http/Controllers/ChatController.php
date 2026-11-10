@@ -15,7 +15,6 @@ class ChatController extends Controller
             'messages'           => ['required', 'array', 'min:1', 'max:24'],
             'messages.*.role'    => ['required', 'string', 'in:user,assistant'],
             'messages.*.content' => ['required', 'string', 'max:4000'],
-            'model'              => ['nullable', 'string', 'max:40'],
         ]);
 
         $messages = collect($data['messages'])
@@ -55,15 +54,16 @@ class ChatController extends Controller
         $overGlobal = $store->get($globalKey, 0) >= $cfg['global_per_day'];
         $store->put($globalKey, $store->get($globalKey, 0) + 1, 60 * 60 * 26);
 
-        $preferred = $data['model'] ?? null;
-        if ($preferred && ! array_key_exists($preferred, $ai->available())) {
-            $preferred = null; // unknown or switched-off provider: use Auto
+        // No model picker: visitors talk to one assistant; providers are chosen on the server
+        $result = $overGlobal
+            ? ['reply' => $ai->localReply(end($messages)['content'], true), 'source' => 'local']
+            : $ai->reply($messages);
+
+        // Which provider answered stays in the server log, not in the browser
+        if (($result['source'] ?? '') !== 'local') {
+            \Illuminate\Support\Facades\Log::info('AI reply', ['provider' => $result['source'] ?? null]);
         }
 
-        $result = $overGlobal
-            ? ['reply' => $ai->localReply(end($messages)['content'], true), 'source' => 'local', 'label' => 'e-Trust (built-in)']
-            : $ai->reply($messages, $preferred);
-
-        return response()->json($result);
+        return response()->json(['reply' => $result['reply'], 'label' => 'e-Trust AI']);
     }
 }

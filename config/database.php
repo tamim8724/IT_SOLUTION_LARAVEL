@@ -31,6 +31,14 @@ return [
 
     'connections' => [
 
+        // Live site database: MongoDB (e.g. a free MongoDB Atlas cluster).
+        // Needs the PHP "mongodb" extension and the mongodb/laravel-mongodb package (both set up in the Dockerfile).
+        'mongodb' => [
+            'driver' => 'mongodb',
+            'dsn' => env('MONGODB_URI', 'mongodb://127.0.0.1:27017'),
+            'database' => env('MONGODB_DATABASE', 'etrust'),
+        ],
+
         'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DB_URL'),

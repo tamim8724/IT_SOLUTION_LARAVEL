@@ -11,7 +11,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        // Render sits behind a proxy: trust it so https and the real visitor IP are detected
+        $middleware->trustProxies(at: '*');
+        $middleware->prepend(\App\Http\Middleware\CanonicalHost::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

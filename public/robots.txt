@@ -1,4 +1,4 @@
 User-agent: *
-Disallow:
+Disallow: /admin
 
-Sitemap: https://www.e-trust.online/sitemap.xml
+Sitemap: https://e-trust.online/sitemap.xml
